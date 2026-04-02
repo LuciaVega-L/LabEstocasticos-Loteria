@@ -13,3 +13,4 @@ sorteos = df.values
 
 print(f"Sorteos cargados: {len(sorteos)}")
 print(f"Primeros 5:\n{sorteos[:5]}")
+

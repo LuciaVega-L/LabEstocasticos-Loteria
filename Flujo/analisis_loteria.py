@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+from datos import DatosLoteria
 
 
 class AnalizadorNumerosGanadores:
@@ -10,6 +11,7 @@ class AnalizadorNumerosGanadores:
     """
 
     VALOR_CRITICO_CHI = 16.919  # Chi-cuadrado crítico con gl=9 y α=0.05
+    DATOS = DatosLoteria
 
     def __init__(self, ruta_excel: str = None):
         """
