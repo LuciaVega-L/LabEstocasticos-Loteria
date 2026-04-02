@@ -1,157 +1,78 @@
-import pandas as pd
+from scipy.stats import chi2_contingency, spearmanr
 import numpy as np
-import os
-from datos import DatosLoteria
 
+class AuditorEstadistico:
 
-class AnalizadorNumerosGanadores:
-    """
-    Clase para analizar la aleatoriedad e independencia de números ganadores
-    de lotería mediante pruebas estadísticas de Chi-cuadrado y Autocorrelación.
-    """
+    def __init__(self, datos):
+        self._fuente_datos = datos
 
-    VALOR_CRITICO_CHI = 16.919  # Chi-cuadrado crítico con gl=9 y α=0.05
-    DATOS = DatosLoteria
+    def evaluar_independencia(self) -> dict:
+        centenas = self._fuente_datos.get_arreglo("centenas")
+        decenas  = self._fuente_datos.get_arreglo("decenas")
+        unidades = self._fuente_datos.get_arreglo("unidades")
 
-    def __init__(self, ruta_excel: str = None):
-        """
-        Inicializa el analizador cargando los datos desde un archivo Excel.
+        def p_value_chi2(arreglo_a, arreglo_b):
+            tabla = np.zeros((10, 10), dtype=int)
+            for a, b in zip(arreglo_a, arreglo_b):
+                tabla[a][b] += 1
+            _, p, _, _ = chi2_contingency(tabla)
+            return p
 
-        Args:
-            ruta_excel (str): Ruta al archivo Excel. Si no se proporciona,
-                              se construye automáticamente relativa al script.
-        """
-        self.ruta_excel = ruta_excel or self._ruta_por_defecto()
-        self.df: pd.DataFrame = None
-        self.centenas: np.ndarray = None
-        self.decenas: np.ndarray = None
-        self.unidades: np.ndarray = None
-        self._cargar_datos()
+        p_cd = p_value_chi2(centenas, decenas)
+        p_du = p_value_chi2(decenas,  unidades)
+        p_cu = p_value_chi2(centenas, unidades)
 
-    # ------------------------------------------------------------------
-    # Métodos privados
-    # ------------------------------------------------------------------
+        return {
+            "es_independiente": p_cd > 0.05 and p_du > 0.05 and p_cu > 0.05,
+            "p_value_cd": p_cd,
+            "p_value_du": p_du,
+            "p_value_cu": p_cu
+        }
 
-    def _ruta_por_defecto(self) -> str:
-        """Construye la ruta por defecto al archivo Excel."""
-        ruta_base = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ruta_base, "..", "Data", "DB-NumerosGanadores.xlsx")
-
-    def _cargar_datos(self) -> None:
-        """Carga el archivo Excel y extrae las columnas de dígitos."""
-        print(f"Cargando datos desde: {self.ruta_excel}")
-        self.df = pd.read_excel(self.ruta_excel)
-        self.centenas = self.df.iloc[:, 0].to_numpy()
-        self.decenas  = self.df.iloc[:, 1].to_numpy()
-        self.unidades = self.df.iloc[:, 2].to_numpy()
-        print(f"Datos cargados: {len(self.centenas)} registros.\n")
-
-    # ------------------------------------------------------------------
-    # Métodos de análisis estadístico
-    # ------------------------------------------------------------------
-
-    def chi_cuadrado(self, datos: np.ndarray) -> tuple[float, np.ndarray]:
-        """
-        Calcula el estadístico Chi-cuadrado para evaluar uniformidad
-        (aleatoriedad) de los dígitos 0-9.
-
-        Args:
-            datos (np.ndarray): Arreglo de dígitos a analizar.
-
-        Returns:
-            tuple: (estadístico chi², arreglo de frecuencias observadas)
-        """
-        n = len(datos)
-        esperado = n / 10  # frecuencia esperada por dígito
-        frecuencias = np.zeros(10)
-
-        for d in datos:
-            frecuencias[int(d)] += 1
-
-        chi = np.sum((frecuencias - esperado) ** 2 / esperado)
-        return chi, frecuencias
-
-    def autocorrelacion(self, datos: np.ndarray, lag: int = 1) -> float:
-        """
-        Calcula la autocorrelación de los datos para evaluar independencia
-        entre sorteos consecutivos.
-
-        Args:
-            datos (np.ndarray): Arreglo de dígitos a analizar.
-            lag (int): Desfase temporal. Por defecto 1.
-
-        Returns:
-            float: Coeficiente de autocorrelación [-1, 1].
-        """
-        datos = np.array(datos, dtype=float)
-        n = len(datos)
-        media = np.mean(datos)
-        num = np.sum((datos[:n - lag] - media) * (datos[lag:] - media))
-        den = np.sum((datos - media) ** 2)
-        return num / den
-
-    # ------------------------------------------------------------------
-    # Métodos de reporte
-    # ------------------------------------------------------------------
-
-    def reporte_chi_cuadrado(self) -> dict:
-        """
-        Calcula e imprime el reporte de Chi-cuadrado para las tres posiciones.
-
-        Returns:
-            dict: Resultados con estadístico y frecuencias por posición.
-        """
-        print("=== CHI-CUADRADO (ALEATORIEDAD) ===")
+    def evaluar_aleatoriedad(self) -> dict:
         resultados = {}
-        for nombre, datos in [("Centenas", self.centenas),
-                               ("Decenas",  self.decenas),
-                               ("Unidades", self.unidades)]:
-            chi, frecuencias = self.chi_cuadrado(datos)
-            pasa = chi < self.VALOR_CRITICO_CHI
-            print(f"{nombre:<10}: χ² = {chi:.4f}  "
-                  f"{'✔ Pasa' if pasa else '✘ No pasa'} "
-                  f"(crítico = {self.VALOR_CRITICO_CHI})")
-            resultados[nombre] = {"chi": chi, "frecuencias": frecuencias, "pasa": pasa}
+        for posicion in ["centenas", "decenas", "unidades"]:
+            arreglo = self._fuente_datos.get_arreglo(posicion)
+            indices = list(range(len(arreglo)))
+            correlacion, p_value = spearmanr(indices, arreglo)
+            resultados[posicion] = {
+                "es_aleatorio": p_value > 0.05,
+                "correlacion":  correlacion,
+                "p_value":      p_value
+            }
         return resultados
 
-    def reporte_autocorrelacion(self, lag: int = 1) -> dict:
-        """
-        Calcula e imprime el reporte de autocorrelación para las tres posiciones.
+    def generar_reporte(self) -> str:
+        indep  = self.evaluar_independencia()
+        aleat  = self.evaluar_aleatoriedad()
 
-        Args:
-            lag (int): Desfase temporal. Por defecto 1.
+        lineas = [
+            "===== REPORTE DE AUDITORÍA ESTADÍSTICA =====",
+            "",
+            "--- Independencia entre posiciones ---",
+            f"  Centenas vs Decenas  | p-value: {indep['p_value_cd']:.4f}",
+            f"  Decenas  vs Unidades | p-value: {indep['p_value_du']:.4f}",
+            f"  Centenas vs Unidades | p-value: {indep['p_value_cu']:.4f}",
+            f"  Veredicto: {'INDEPENDIENTES ✓' if indep['es_independiente'] else 'NO independientes ✗'}",
+            "",
+            "--- Aleatoriedad por posición (Spearman) ---",
+        ]
 
-        Returns:
-            dict: Coeficientes de autocorrelación por posición.
-        """
-        print(f"\n=== AUTOCORRELACIÓN (INDEPENDENCIA) — lag={lag} ===")
-        resultados = {}
-        for nombre, datos in [("Centenas", self.centenas),
-                               ("Decenas",  self.decenas),
-                               ("Unidades", self.unidades)]:
-            ac = self.autocorrelacion(datos, lag)
-            print(f"{nombre:<10}: r = {ac:.6f}")
-            resultados[nombre] = ac
-        return resultados
+        for posicion, res in aleat.items():
+            lineas.append(
+                f"  {posicion.capitalize():10} | correlación: {res['correlacion']:+.4f} | "
+                f"p-value: {res['p_value']:.4f} | "
+                f"{'Aleatoria ✓' if res['es_aleatorio'] else 'No aleatoria ✗'}"
+            )
 
-    def analisis_completo(self, lag: int = 1) -> dict:
-        """
-        Ejecuta el análisis completo: Chi-cuadrado y Autocorrelación.
+        lineas += [
+            "",
+            "--- Conclusión ---",
+            "  El modelo de Markov está justificado." if (
+                indep["es_independiente"] and all(r["es_aleatorio"] for r in aleat.values())
+            ) else "  Advertencia: los datos no cumplen todos los supuestos del modelo.",
+            "",
+            "============================================="
+        ]
 
-        Args:
-            lag (int): Desfase para la autocorrelación. Por defecto 1.
-
-        Returns:
-            dict: Resultados combinados de ambas pruebas.
-        """
-        chi_resultados = self.reporte_chi_cuadrado()
-        ac_resultados  = self.reporte_autocorrelacion(lag)
-        return {"chi_cuadrado": chi_resultados, "autocorrelacion": ac_resultados}
-
-
-# ------------------------------------------------------------------
-# Punto de entrada
-# ------------------------------------------------------------------
-if __name__ == "__main__":
-    analizador = AnalizadorNumerosGanadores()
-    analizador.analisis_completo()
+        return "\n".join(lineas)

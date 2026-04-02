@@ -1,5 +1,6 @@
 import os
 from datos import DatosLoteria
+from analisis_loteria import AuditorEstadistico
 
 
 
@@ -21,12 +22,6 @@ def main():
     centenas = datos_loteria.get_arreglo("centenas")
     decenas  = datos_loteria.get_arreglo("decenas")
     unidades = datos_loteria.get_arreglo("unidades")
-
-    
-    #Imprimir los arreglos de dígitos
-    print("Arreglo de centenas:", centenas)
-    print("Arreglo de decenas:", decenas)
-    print("Arreglo de unidades:", unidades)
    
     #Imprimir longitud de cada arreglo
     print("Longitud del arreglo de centenas:", len(centenas))
@@ -36,6 +31,13 @@ def main():
     # Imprimir la última condición inicial (último número registrado)
     condicion_inicial = datos_loteria.get_condicion_inicial()
     print("Último número registrado (condición inicial):", condicion_inicial)
+
+    # Crear instancia de AuditorEstadistico
+    auditor = AuditorEstadistico(datos_loteria)
+    
+    # Generar reporte de auditoría
+    reporte = auditor.generar_reporte()
+    print(reporte)
 
 if __name__ == "__main__":
     main()
