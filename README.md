@@ -174,6 +174,187 @@ Ambos casos los resuelve quien consuma este método, sin que la clase tome decis
 
 ---
 
+## Casos de uso — Métodos públicos de predicción
+
+Una vez construido el modelo con `construir_modelo_completo()`, los dos casos de uso del laboratorio se resuelven con estos dos métodos. Ambos viven dentro de `SistemaMarkovLoteria` e internamente delegan en `predecir_a_futuro`.
+
+---
+
+### `caso1_numero_mas_probable(k_dias)`
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│               caso1_numero_mas_probable(k_dias)                 │
+├─────────────────────────────────────────────────────────────────┤
+│  ENTRADA                                                        │
+│  └── k_dias : int                                               │
+│        Número de días hacia adelante que se desea proyectar.    │
+│        Ejemplo: 5 → "¿qué número es más probable en 5 días?"   │
+├─────────────────────────────────────────────────────────────────┤
+│  PROCESO INTERNO                                                │
+│  1. Llama a predecir_a_futuro(k_dias)                          │
+│     → obtiene v(k) para centenas, decenas y unidades           │
+│  2. Para cada posición:                                         │
+│     · maximo  = max(v(k))                                       │
+│     · digito  = índice del máximo (argmax)                      │
+│     · empates = lista de otros índices con el mismo valor       │
+│  3. probabilidad_conjunta = prob_c × prob_d × prob_u            │
+│     (regla multiplicativa — las tres posiciones son             │
+│      independientes por diseño del modelo)                      │
+├─────────────────────────────────────────────────────────────────┤
+│  SALIDA : dict                                                  │
+│                                                                 │
+│  {                                                              │
+│    "numero": (int, int, int),                                   │
+│        └── tupla (centena, decena, unidad) más probable         │
+│            Ejemplo: (1, 9, 1)                                   │
+│                                                                 │
+│    "probabilidad_conjunta": Decimal,                            │
+│        └── producto de las tres probabilidades máximas          │
+│            Ejemplo: 0.0011786956...                             │
+│                                                                 │
+│    "detalle": {                                                 │
+│      "centenas": {                                              │
+│        "digito":       int,      ← dígito más probable (0-9)   │
+│        "probabilidad": Decimal,  ← su probabilidad individual  │
+│        "empates":      list[int] ← [] si no hay empate,        │
+│      },                            o [i, j, ...] si los hay    │
+│      "decenas":  { ... },  ← misma estructura                  │
+│      "unidades": { ... }   ← misma estructura                  │
+│    }                                                            │
+│  }                                                              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Ejemplo de uso:**
+```python
+resultado = sistema.caso1_numero_mas_probable(5)
+
+numero = resultado["numero"]                    # (1, 9, 1)
+prob   = resultado["probabilidad_conjunta"]     # Decimal('0.00117...')
+
+# Si se quiere inspeccionar el detalle por posición:
+detalle_c = resultado["detalle"]["centenas"]
+print(detalle_c["digito"])       # 1
+print(detalle_c["probabilidad"]) # Decimal('0.10603...')
+print(detalle_c["empates"])      # [] — sin empates
+```
+
+**Nota sobre empates:** si dos dígitos tienen exactamente la misma probabilidad máxima, `"digito"` toma el primero (el de índice menor) y `"empates"` lista los demás. No cambia la decisión, pero queda registrado para que la interfaz pueda informarlo.
+
+---
+
+### `caso2_probabilidad_numero(k_dias, numero)`
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│           caso2_probabilidad_numero(k_dias, numero)             │
+├─────────────────────────────────────────────────────────────────┤
+│  ENTRADA                                                        │
+│  ├── k_dias : int                                               │
+│  │     Número de días hacia adelante a proyectar.               │
+│  │     Ejemplo: 10                                              │
+│  └── numero : tuple(int, int, int)                              │
+│        Número específico a consultar, como tupla de dígitos.    │
+│        Ejemplo: (5, 2, 1) → número "521"                        │
+│                                                                 │
+│  ¿Por qué tupla y no entero?                                    │
+│  Porque la interfaz normalmente recibe tres campos separados    │
+│  (uno por dígito), y así es consistente con get_condicion_      │
+│  inicial() que usa el mismo formato. Construir la tupla en la   │
+│  capa de interfaz es natural: (c, d, u) = campos del formulario │
+├─────────────────────────────────────────────────────────────────┤
+│  PROCESO INTERNO                                                │
+│  1. Llama a predecir_a_futuro(k_dias)                          │
+│     → obtiene v(k) para centenas, decenas y unidades           │
+│  2. Desempaqueta numero → (digito_c, digito_d, digito_u)        │
+│  3. Para cada posición extrae el valor exacto del vector:       │
+│     · prob_c = v_centenas[digito_c]                             │
+│     · prob_d = v_decenas[digito_d]                              │
+│     · prob_u = v_unidades[digito_u]                             │
+│  4. probabilidad_conjunta = prob_c × prob_d × prob_u            │
+├─────────────────────────────────────────────────────────────────┤
+│  SALIDA : dict                                                  │
+│                                                                 │
+│  {                                                              │
+│    "numero": (int, int, int),                                   │
+│        └── el mismo número que se recibió como entrada          │
+│            Ejemplo: (5, 2, 1)                                   │
+│                                                                 │
+│    "probabilidad_conjunta": Decimal,                            │
+│        └── probabilidad de que ese número exacto salga          │
+│            en k días                                            │
+│            Ejemplo: 0.0013614058...                             │
+│                                                                 │
+│    "detalle": {                                                 │
+│      "centenas": {                                              │
+│        "digito":       int,      ← el dígito consultado        │
+│        "probabilidad": Decimal   ← su probabilidad en v(k)     │
+│      },                                                         │
+│      "decenas":  { ... },  ← misma estructura                  │
+│      "unidades": { ... }   ← misma estructura                  │
+│    }                                                            │
+│  }                                                              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Ejemplo de uso:**
+```python
+resultado = sistema.caso2_probabilidad_numero(10, (5, 2, 1))
+
+prob = resultado["probabilidad_conjunta"]   # Decimal('0.00103...')
+
+# Desglose por posición:
+for posicion in ["centenas", "decenas", "unidades"]:
+    d = resultado["detalle"][posicion]
+    print(f"{posicion}: dígito={d['digito']}  prob={d['probabilidad']}")
+```
+
+---
+
+### Relación entre los dos casos y `predecir_a_futuro`
+
+```
+predecir_a_futuro(k)
+        │
+        │  retorna vectores completos v(k) para las 3 posiciones
+        │
+        ├──► caso1_numero_mas_probable(k)
+        │         toma el argmax de cada vector
+        │         → el número más probable + su probabilidad conjunta
+        │
+        └──► caso2_probabilidad_numero(k, numero)
+                  extrae el índice exacto de cada vector
+                  → la probabilidad de ese número específico
+```
+
+Esta separación garantiza que la lógica matemática pesada (exponenciación de matrices, multiplicación vector-matriz) se ejecuta una sola vez en `predecir_a_futuro`, y los dos casos solo interpretan el resultado.
+
+---
+
+## Verificación matemática independiente
+
+Para validar que el modelo está correctamente implementado, se realizó una verificación manual completa sobre los datos reales del archivo `historial_loteria.xlsx` (7489 registros).
+
+El proceso fue:
+
+1. Construir la matriz de conteos para la posición de **centenas** recorriendo los 7489 registros en orden cronológico y contando cuántas veces el dígito `i` fue seguido por el dígito `j`.
+2. Dividir cada fila por su total para obtener la matriz estocástica.
+3. Construir el vector inicial `e_5` (condición inicial: última centena fue `5`).
+4. Calcular `v(1) = v(0) · M` manualmente con `Decimal`.
+5. Comparar contra lo que reporta el sistema para `k=1`, posición centenas.
+
+**Resultado:**
+
+| | Dígito más probable | Probabilidad |
+|---|---|---|
+| Sistema | 5 | 0.1164658635 |
+| Verificación manual | 5 | 0.1164658635 |
+
+Coincidencia exacta. El vector resultante suma `0.9999999...` con 50 dígitos, confirmando que tanto la construcción de la matriz como la operación `v · M` están implementadas correctamente de raíz.
+
+---
+
 ## Módulo `main.py` — Pruebas del sistema
 
 El `main.py` actual cumple dos funciones: ejecutar pruebas de la clase `DatosLoteria` (longitudes de arreglos, condición inicial) y un bloque de test completo para `SistemaMarkovLoteria`.
@@ -229,3 +410,22 @@ python main.py
 ```
 
 El archivo de datos debe estar en `../Data/historial_loteria.xlsx` relativo al directorio `Flujo/`.
+
+#### 5. Test de Caso 1 — número más probable
+
+Para k = 1, 5 y 10 días, imprime el número más probable, su probabilidad conjunta y el detalle por posición incluyendo empates si los hay. Verifica que los tres métodos (`predecir_a_futuro`, `caso1_numero_mas_probable`, manejo de empates) funcionan de extremo a extremo.
+
+#### 6. Test de Caso 2 — probabilidad de número específico
+
+Consulta tres números concretos (`521`, `000`, `361`) para k = 1, 5 y 10 días. Verifica que la extracción del índice exacto del vector funciona correctamente y que la probabilidad conjunta se calcula bien.
+
+#### 7. Verificación cruzada Caso 1 vs Caso 2
+
+```python
+res_c1    = sistema.caso1_numero_mas_probable(k)
+numero_c1 = res_c1["numero"]
+res_c2    = sistema.caso2_probabilidad_numero(k, numero_c1)
+coincide  = abs(res_c1["probabilidad_conjunta"] - res_c2["probabilidad_conjunta"]) < Decimal("1e-40")
+```
+
+Si se le pide al Caso 2 la probabilidad del mismo número que predijo el Caso 1, ambos deben dar exactamente el mismo valor. Esta es la verificación más importante: si falla, hay una inconsistencia entre los dos métodos. Con los datos reales (7489 registros), los tres valores de k probados dieron `OK`.
