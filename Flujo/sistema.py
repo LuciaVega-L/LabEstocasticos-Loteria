@@ -91,3 +91,58 @@ class SistemaMarkovLoteria:
             }
 
         return resultado
+
+    def caso1_numero_mas_probable(self, k_dias):
+        vectores = self.predecir_a_futuro(k_dias)
+        detalle  = {}
+
+        for posicion in ["centenas", "decenas", "unidades"]:
+            vk      = vectores[posicion]["vector"]
+            maximo  = max(vk)
+            digito  = vk.index(maximo)
+            empates = [i for i, v in enumerate(vk) if v == maximo and i != digito]
+
+            detalle[posicion] = {
+                "digito":       digito,
+                "probabilidad": maximo,
+                "empates":      empates
+            }
+
+        probabilidad_conjunta = (
+            detalle["centenas"]["probabilidad"] *
+            detalle["decenas"]["probabilidad"]  *
+            detalle["unidades"]["probabilidad"]
+        )
+
+        return {
+            "numero":                (detalle["centenas"]["digito"],
+                                      detalle["decenas"]["digito"],
+                                      detalle["unidades"]["digito"]),
+            "probabilidad_conjunta": probabilidad_conjunta,
+            "detalle":               detalle
+        }
+
+
+    def caso2_probabilidad_numero(self, k_dias, numero):
+        vectores = self.predecir_a_futuro(k_dias)
+        detalle  = {}
+
+        for posicion, digito in zip(["centenas", "decenas", "unidades"], numero):
+            prob = vectores[posicion]["vector"][digito]
+
+            detalle[posicion] = {
+                "digito":       digito,
+                "probabilidad": prob
+            }
+
+        probabilidad_conjunta = (
+            detalle["centenas"]["probabilidad"] *
+            detalle["decenas"]["probabilidad"]  *
+            detalle["unidades"]["probabilidad"]
+        )
+
+        return {
+            "numero":                numero,
+            "probabilidad_conjunta": probabilidad_conjunta,
+            "detalle":               detalle
+        }

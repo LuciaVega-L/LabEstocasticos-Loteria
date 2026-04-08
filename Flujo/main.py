@@ -77,5 +77,58 @@ def main():
         suma = sum(vk)
         print(f"  {posicion}: suma = {suma}  {'OK' if abs(suma - Decimal(1)) < Decimal('1e-40') else 'ERROR'}")
 
+
+    # ── TEST Caso 1 y Caso 2 ──────────────────────────────────────────────
+
+    print("\n" + "="*50)
+    print("TEST: Caso 1 — Número más probable")
+    print("="*50)
+
+    for k in [1, 5, 10]:
+        resultado = sistema.caso1_numero_mas_probable(k)
+        numero    = resultado["numero"]
+        prob      = resultado["probabilidad_conjunta"]
+        detalle   = resultado["detalle"]
+
+        print(f"\n  k={k} días:")
+        print(f"    Número más probable : {''.join(map(str, numero))}")
+        print(f"    Probabilidad conjunta: {prob:.10f}")
+        for posicion in ["centenas", "decenas", "unidades"]:
+            d = detalle[posicion]
+            empates_str = f" — empates con {d['empates']}" if d["empates"] else ""
+            print(f"    {posicion}: dígito={d['digito']}  prob={d['probabilidad']:.10f}{empates_str}")
+
+    print("\n" + "="*50)
+    print("TEST: Caso 2 — Probabilidad de un número específico")
+    print("="*50)
+
+    numeros_a_consultar = [(5, 2, 1), (0, 0, 0), (3, 6, 1)]
+
+    for numero in numeros_a_consultar:
+        print(f"\n  Número consultado: {''.join(map(str, numero))}")
+        for k in [1, 5, 10]:
+            resultado = sistema.caso2_probabilidad_numero(k, numero)
+            prob      = resultado["probabilidad_conjunta"]
+            detalle   = resultado["detalle"]
+            print(f"    k={k:>2} días → probabilidad conjunta: {prob:.10f}")
+            for posicion in ["centenas", "decenas", "unidades"]:
+                d = detalle[posicion]
+                print(f"      {posicion}: dígito={d['digito']}  prob={d['probabilidad']:.10f}")
+
+    # Verificación cruzada: el número del Caso 1 debería tener
+    # probabilidad conjunta >= cualquier número consultado en Caso 2 para el mismo k
+    print("\n" + "="*50)
+    print("TEST: Verificación cruzada Caso 1 vs Caso 2")
+    print("="*50)
+
+    for k in [1, 5, 10]:
+        res_c1       = sistema.caso1_numero_mas_probable(k)
+        numero_c1    = res_c1["numero"]
+        prob_c1      = res_c1["probabilidad_conjunta"]
+        res_c2       = sistema.caso2_probabilidad_numero(k, numero_c1)
+        prob_c2      = res_c2["probabilidad_conjunta"]
+        coincide     = abs(prob_c1 - prob_c2) < Decimal("1e-40")
+        print(f"  k={k:>2}: Caso1={prob_c1:.10f}  Caso2({numero_c1})={prob_c2:.10f}  {'OK' if coincide else 'ERROR — no coinciden'}")
+
 if __name__ == "__main__":
     main()
