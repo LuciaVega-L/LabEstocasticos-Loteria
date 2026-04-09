@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>511</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackPrincipal">
+      <widget class="QWidget" name="page">
+       <widget class="QPushButton" name="btnIrProbabilidad">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>110</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calcular Probabilidad de un Número</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnIrMasProbable">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>150</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ver Número Más Probable</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnIrMatrices">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>190</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ver Matrices de Transición</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_3">
+       <widget class="QPushButton" name="btnVolver2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>40</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox_2">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>130</y>
+          <width>78</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>180</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calcular</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="lcdNumber">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>230</y>
+          <width>64</width>
+          <height>23</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <widget class="QPushButton" name="btnVolver3">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>30</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>140</y>
+          <width>301</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Centenas</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Decenas</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_1">
+         <attribute name="title">
+          <string>Unidades</string>
+         </attribute>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <widget class="QPushButton" name="btnVolver1">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>40</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>110</y>
+          <width>113</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>170</y>
+          <width>78</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
