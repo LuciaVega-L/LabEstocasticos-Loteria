@@ -1,822 +1,195 @@
-"""
-app_loteria.py — Interfaz PyQt6 completa para el Sistema Markov Lotería
-Coloca este archivo en la carpeta Flujo/ junto a datos.py, sistema.py y analisis_loteria.py
-"""
-
-import sys
-import os
-from decimal import Decimal
-
-from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QStackedWidget,
-    QVBoxLayout, QHBoxLayout, QGridLayout,
-    QPushButton, QLabel, QSpinBox, QLineEdit,
-    QTableWidget, QTableWidgetItem, QHeaderView,
-    QFrame, QTextEdit, QMessageBox, QSizePolicy
-)
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, QPropertyAnimation, QEasingCurve
-from PyQt6.QtGui import QFont, QColor, QPalette, QIntValidator
-
-# ── Importar módulos de lógica ──────────────────────────────────────────────
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from datos import DatosLoteria
-from analisis_loteria import AuditorEstadistico
-from sistema import SistemaMarkovLoteria
-
-# ── Paleta de colores ───────────────────────────────────────────────────────
-C_BG        = "#0D0F1A"   # fondo principal
-C_SURFACE   = "#151827"   # superficie de tarjetas
-C_BORDER    = "#1E2235"   # bordes sutiles
-C_ACCENT    = "#4F8EF7"   # azul eléctrico (acento primario)
-C_ACCENT2   = "#A78BFA"   # violeta (acento secundario)
-C_SUCCESS   = "#34D399"   # verde
-C_WARN      = "#FBBF24"   # ámbar
-C_DANGER    = "#F87171"   # rojo
-C_TEXT      = "#E2E8F0"   # texto principal
-C_MUTED     = "#64748B"   # texto secundario
-
-STYLE_GLOBAL = f"""
-QWidget {{
-    background-color: {C_BG};
-    color: {C_TEXT};
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 13px;
-}}
-QScrollBar:vertical {{
-    background: {C_SURFACE};
-    width: 8px;
-    border-radius: 4px;
-}}
-QScrollBar::handle:vertical {{
-    background: {C_BORDER};
-    border-radius: 4px;
-    min-height: 20px;
-}}
-QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height: 0; }}
-"""
-
-def card_style(border_color=C_BORDER):
-    return f"""
-        background-color: {C_SURFACE};
-        border: 1px solid {border_color};
-        border-radius: 10px;
-        padding: 16px;
-    """
-
-def btn_primary():
-    return f"""
-        QPushButton {{
-            background-color: {C_ACCENT};
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            font-size: 13px;
-        }}
-        QPushButton:hover {{ background-color: #6B9FFA; }}
-        QPushButton:pressed {{ background-color: #3B75E0; }}
-        QPushButton:disabled {{ background-color: {C_BORDER}; color: {C_MUTED}; }}
-    """
-
-def btn_secondary():
-    return f"""
-        QPushButton {{
-            background-color: transparent;
-            color: {C_ACCENT};
-            border: 1px solid {C_ACCENT};
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: 500;
-        }}
-        QPushButton:hover {{ background-color: rgba(79,142,247,0.1); }}
-        QPushButton:pressed {{ background-color: rgba(79,142,247,0.2); }}
-    """
-
-def btn_ghost():
-    return f"""
-        QPushButton {{
-            background-color: transparent;
-            color: {C_MUTED};
-            border: none;
-            padding: 6px 12px;
-            font-size: 12px;
-        }}
-        QPushButton:hover {{ color: {C_TEXT}; }}
-    """
-
-def input_style():
-    return f"""
-        QLineEdit, QSpinBox {{
-            background-color: {C_BG};
-            color: {C_TEXT};
-            border: 1px solid {C_BORDER};
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 14px;
-        }}
-        QLineEdit:focus, QSpinBox:focus {{
-            border: 1px solid {C_ACCENT};
-        }}
-        QSpinBox::up-button, QSpinBox::down-button {{
-            background-color: {C_BORDER};
-            border-radius: 3px;
-            width: 18px;
-        }}
-    """
-
-def label_title(text, size=22, color=C_TEXT):
-    lbl = QLabel(text)
-    lbl.setStyleSheet(f"color: {color}; font-size: {size}px; font-weight: 700; background: transparent; border: none;")
-    return lbl
-
-def label_sub(text, color=C_MUTED):
-    lbl = QLabel(text)
-    lbl.setStyleSheet(f"color: {color}; font-size: 12px; background: transparent; border: none;")
-    return lbl
-
-def separator():
-    line = QFrame()
-    line.setFrameShape(QFrame.Shape.HLine)
-    line.setStyleSheet(f"color: {C_BORDER};")
-    return line
-
-
-# ── Worker thread para no bloquear la UI ───────────────────────────────────
-class WorkerPrediccion(QThread):
-    resultado = pyqtSignal(dict)
-    error     = pyqtSignal(str)
-
-    def __init__(self, sistema, modo, k, numero=None):
-        super().__init__()
-        self.sistema = sistema
-        self.modo    = modo   # "caso1" | "caso2"
-        self.k       = k
-        self.numero  = numero
-
-    def run(self):
-        try:
-            if self.modo == "caso1":
-                res = self.sistema.caso1_numero_mas_probable(self.k)
-            else:
-                res = self.sistema.caso2_probabilidad_numero(self.k, self.numero)
-            self.resultado.emit(res)
-        except Exception as e:
-            self.error.emit(str(e))
-
-
-# ── Página 0: Menú Principal ────────────────────────────────────────────────
-class PaginaMenu(QWidget):
-    def __init__(self, datos, auditor, sistema, parent=None):
-        super().__init__(parent)
-        self.datos   = datos
-        self.auditor = auditor
-        self.sistema = sistema
-        self._build()
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(40, 40, 40, 40)
-        lay.setSpacing(20)
-
-        # Header
-        header = QWidget()
-        header.setStyleSheet(f"background: transparent; border: none;")
-        h_lay = QVBoxLayout(header)
-        h_lay.setSpacing(4)
-        badge = QLabel("🎰 SISTEMA ESTOCÁSTICO")
-        badge.setStyleSheet(f"color: {C_ACCENT}; font-size: 11px; font-weight: 700; letter-spacing: 2px; background: transparent; border: none;")
-        h_lay.addWidget(badge)
-        h_lay.addWidget(label_title("Predictor de Lotería", 28))
-        h_lay.addWidget(label_sub("Modelo de Cadenas de Markov • Tres dígitos independientes"))
-        lay.addWidget(header)
-
-        # Condición inicial
-        ci = self.datos.get_condicion_inicial()
-        ci_card = QFrame()
-        ci_card.setStyleSheet(card_style(C_ACCENT))
-        ci_lay = QHBoxLayout(ci_card)
-        ci_lay.setContentsMargins(20, 16, 20, 16)
-        lbl_ci_t = QLabel("Último número registrado")
-        lbl_ci_t.setStyleSheet(f"color: {C_MUTED}; font-size: 12px; background: transparent; border: none;")
-        ci_lay.addWidget(lbl_ci_t)
-        ci_lay.addStretch()
-        lbl_ci_n = QLabel(f"{''.join(map(str, ci))}")
-        lbl_ci_n.setStyleSheet(f"color: {C_ACCENT}; font-size: 28px; font-weight: 800; letter-spacing: 8px; background: transparent; border: none;")
-        ci_lay.addWidget(lbl_ci_n)
-        lay.addWidget(ci_card)
-
-        # Botones principales
-        opciones = [
-            ("📊", "Número Más Probable",          "Caso 1: predicción del dígito con mayor probabilidad por posición",        C_ACCENT,  "caso1"),
-            ("🔢", "Probabilidad de un Número",     "Caso 2: consulta la probabilidad conjunta de un número específico",        C_ACCENT2, "caso2"),
-            ("📋", "Matrices de Transición",        "Visualiza las matrices 10×10 para centenas, decenas y unidades",           C_SUCCESS, "matrices"),
-            ("➕", "Registrar Nuevo Sorteo",        "Agrega un resultado real al historial y actualiza el modelo",              C_WARN,    "registro"),
-        ]
-
-        for icon, titulo, desc, color, clave in opciones:
-            btn_card = QFrame()
-            btn_card.setStyleSheet(f"""
-                QFrame {{
-                    background-color: {C_SURFACE};
-                    border: 1px solid {C_BORDER};
-                    border-radius: 10px;
-                }}
-                QFrame:hover {{
-                    border: 1px solid {color};
-                    background-color: rgba(255,255,255,0.02);
-                }}
-            """)
-            btn_card.setCursor(Qt.CursorShape.PointingHandCursor)
-            btn_lay = QHBoxLayout(btn_card)
-            btn_lay.setContentsMargins(20, 14, 20, 14)
-
-            ic = QLabel(icon)
-            ic.setStyleSheet(f"font-size: 22px; background: transparent; border: none;")
-            btn_lay.addWidget(ic)
-
-            txt = QWidget()
-            txt.setStyleSheet("background: transparent; border: none;")
-            txt_lay = QVBoxLayout(txt)
-            txt_lay.setSpacing(2)
-            txt_lay.setContentsMargins(0,0,0,0)
-            t = QLabel(titulo)
-            t.setStyleSheet(f"color: {C_TEXT}; font-weight: 600; font-size: 14px; background: transparent; border: none;")
-            d = QLabel(desc)
-            d.setStyleSheet(f"color: {C_MUTED}; font-size: 11px; background: transparent; border: none;")
-            txt_lay.addWidget(t)
-            txt_lay.addWidget(d)
-            btn_lay.addWidget(txt)
-            btn_lay.addStretch()
-
-            arrow = QLabel("›")
-            arrow.setStyleSheet(f"color: {color}; font-size: 20px; background: transparent; border: none;")
-            btn_lay.addWidget(arrow)
-
-            # Conectar click
-            btn_card.mousePressEvent = lambda e, k=clave: self._navegar(k)
-            lay.addWidget(btn_card)
-
-        lay.addStretch()
-
-    def _navegar(self, clave):
-        stack = self.window().stack
-        idx = {"caso1": 1, "caso2": 2, "matrices": 3, "registro": 4}
-        stack.setCurrentIndex(idx[clave])
-
-
-# ── Página 1: Número Más Probable (Caso 1) ─────────────────────────────────
-class PaginaCaso1(QWidget):
-    def __init__(self, sistema, parent=None):
-        super().__init__(parent)
-        self.sistema = sistema
-        self._worker = None
-        self._build()
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(32, 32, 32, 32)
-        lay.setSpacing(18)
-
-        # Nav
-        nav = QWidget(); nav.setStyleSheet("background:transparent;border:none;")
-        nav_lay = QHBoxLayout(nav); nav_lay.setContentsMargins(0,0,0,0)
-        back = QPushButton("← Volver"); back.setStyleSheet(btn_ghost())
-        back.clicked.connect(lambda: self.window().stack.setCurrentIndex(0))
-        nav_lay.addWidget(back); nav_lay.addStretch()
-        lay.addWidget(nav)
-
-        lay.addWidget(label_title("Número Más Probable", 22, C_ACCENT))
-        lay.addWidget(label_sub("Caso 1: Selecciona el horizonte temporal y calcula la predicción"))
-
-        # Control k
-        ctrl = QFrame(); ctrl.setStyleSheet(card_style())
-        ctrl_lay = QHBoxLayout(ctrl); ctrl_lay.setContentsMargins(20, 16, 20, 16)
-        ctrl_lay.addWidget(QLabel("Días a predecir (k):"))
-        self.spin_k = QSpinBox()
-        self.spin_k.setRange(1, 365)
-        self.spin_k.setValue(1)
-        self.spin_k.setFixedWidth(90)
-        self.spin_k.setStyleSheet(input_style())
-        ctrl_lay.addWidget(self.spin_k)
-        ctrl_lay.addStretch()
-        self.btn_calc = QPushButton("Calcular Predicción")
-        self.btn_calc.setStyleSheet(btn_primary())
-        self.btn_calc.clicked.connect(self._calcular)
-        ctrl_lay.addWidget(self.btn_calc)
-        lay.addWidget(ctrl)
-
-        # Resultado principal
-        self.frame_resultado = QFrame()
-        self.frame_resultado.setStyleSheet(card_style(C_ACCENT))
-        res_lay = QVBoxLayout(self.frame_resultado)
-        res_lay.setContentsMargins(24, 20, 24, 20)
-        self.lbl_num_titulo = QLabel("Número más probable")
-        self.lbl_num_titulo.setStyleSheet(f"color:{C_MUTED}; font-size:12px; background:transparent;border:none;")
-        self.lbl_numero = QLabel("---")
-        self.lbl_numero.setStyleSheet(f"color:{C_ACCENT}; font-size:52px; font-weight:800; letter-spacing:12px; background:transparent;border:none;")
-        self.lbl_numero.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_prob = QLabel("")
-        self.lbl_prob.setStyleSheet(f"color:{C_MUTED}; font-size:12px; background:transparent;border:none;")
-        self.lbl_prob.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        res_lay.addWidget(self.lbl_num_titulo, alignment=Qt.AlignmentFlag.AlignCenter)
-        res_lay.addWidget(self.lbl_numero)
-        res_lay.addWidget(self.lbl_prob)
-        lay.addWidget(self.frame_resultado)
-
-        # Detalle por posición
-        self.frame_detalle = QFrame()
-        self.frame_detalle.setStyleSheet(card_style())
-        det_lay = QGridLayout(self.frame_detalle)
-        det_lay.setContentsMargins(20, 16, 20, 16)
-        det_lay.setSpacing(12)
-
-        posiciones = ["Centenas", "Decenas", "Unidades"]
-        colors     = [C_ACCENT, C_ACCENT2, C_SUCCESS]
-        self.lbl_dig  = {}
-        self.lbl_pdet = {}
-
-        for col, (pos, col_color) in enumerate(zip(posiciones, colors)):
-            card = QFrame()
-            card.setStyleSheet(f"background:{C_BG}; border:1px solid {col_color}; border-radius:8px;")
-            c_lay = QVBoxLayout(card); c_lay.setContentsMargins(16,12,16,12)
-            lp = QLabel(pos)
-            lp.setStyleSheet(f"color:{col_color}; font-weight:700; font-size:12px; background:transparent;border:none;")
-            lp.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            ld = QLabel("—")
-            ld.setStyleSheet(f"color:{C_TEXT}; font-size:32px; font-weight:800; background:transparent;border:none;")
-            ld.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            lprob = QLabel("")
-            lprob.setStyleSheet(f"color:{C_MUTED}; font-size:11px; background:transparent;border:none;")
-            lprob.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            c_lay.addWidget(lp); c_lay.addWidget(ld); c_lay.addWidget(lprob)
-            det_lay.addWidget(card, 0, col)
-            self.lbl_dig[pos.lower()]  = ld
-            self.lbl_pdet[pos.lower()] = lprob
-
-        lay.addWidget(self.frame_detalle)
-        lay.addStretch()
-
-    def _calcular(self):
-        self.btn_calc.setEnabled(False)
-        self.btn_calc.setText("Calculando…")
-        k = self.spin_k.value()
-        self._worker = WorkerPrediccion(self.sistema, "caso1", k)
-        self._worker.resultado.connect(self._mostrar)
-        self._worker.error.connect(self._error)
-        self._worker.start()
-
-    def _mostrar(self, res):
-        self.btn_calc.setEnabled(True)
-        self.btn_calc.setText("Calcular Predicción")
-        numero = res["numero"]
-        prob   = res["probabilidad_conjunta"]
-        detalle = res["detalle"]
-
-        self.lbl_numero.setText("".join(map(str, numero)))
-        self.lbl_prob.setText(f"Probabilidad conjunta: {float(prob):.8f}")
-
-        mapeo = {"centenas": "centenas", "decenas": "decenas", "unidades": "unidades"}
-        mapeo_ui = {"centenas": "centenas", "decenas": "decenas", "unidades": "unidades"}
-        for pos in ["centenas", "decenas", "unidades"]:
-            d = detalle[pos]
-            self.lbl_dig[pos].setText(str(d["digito"]))
-            empate_str = f" (empate: {d['empates']})" if d["empates"] else ""
-            self.lbl_pdet[pos].setText(f"p = {float(d['probabilidad']):.6f}{empate_str}")
-
-    def _error(self, msg):
-        self.btn_calc.setEnabled(True)
-        self.btn_calc.setText("Calcular Predicción")
-        QMessageBox.critical(self, "Error", msg)
-
-
-# ── Página 2: Probabilidad de un número específico (Caso 2) ─────────────────
-class PaginaCaso2(QWidget):
-    def __init__(self, sistema, parent=None):
-        super().__init__(parent)
-        self.sistema = sistema
-        self._worker = None
-        self._build()
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(32, 32, 32, 32)
-        lay.setSpacing(18)
-
-        nav = QWidget(); nav.setStyleSheet("background:transparent;border:none;")
-        nav_lay = QHBoxLayout(nav); nav_lay.setContentsMargins(0,0,0,0)
-        back = QPushButton("← Volver"); back.setStyleSheet(btn_ghost())
-        back.clicked.connect(lambda: self.window().stack.setCurrentIndex(0))
-        nav_lay.addWidget(back); nav_lay.addStretch()
-        lay.addWidget(nav)
-
-        lay.addWidget(label_title("Probabilidad de un Número", 22, C_ACCENT2))
-        lay.addWidget(label_sub("Caso 2: Ingresa un número de 3 dígitos y el horizonte temporal"))
-
-        # Entrada
-        ctrl = QFrame(); ctrl.setStyleSheet(card_style())
-        ctrl_lay = QGridLayout(ctrl); ctrl_lay.setContentsMargins(20, 16, 20, 16); ctrl_lay.setSpacing(12)
-
-        ctrl_lay.addWidget(QLabel("Número (3 dígitos, ej: 521):"), 0, 0)
-        self.input_num = QLineEdit()
-        self.input_num.setPlaceholderText("000 – 999")
-        self.input_num.setMaxLength(3)
-        self.input_num.setValidator(QIntValidator(0, 999))
-        self.input_num.setFixedWidth(120)
-        self.input_num.setStyleSheet(input_style())
-        ctrl_lay.addWidget(self.input_num, 0, 1)
-
-        ctrl_lay.addWidget(QLabel("Días a predecir (k):"), 1, 0)
-        self.spin_k = QSpinBox()
-        self.spin_k.setRange(1, 365)
-        self.spin_k.setValue(1)
-        self.spin_k.setFixedWidth(90)
-        self.spin_k.setStyleSheet(input_style())
-        ctrl_lay.addWidget(self.spin_k, 1, 1)
-
-        self.btn_calc = QPushButton("Consultar Probabilidad")
-        self.btn_calc.setStyleSheet(btn_primary().replace(C_ACCENT, C_ACCENT2).replace("#6B9FFA", "#B49BFF").replace("#3B75E0", "#8B6FD8"))
-        self.btn_calc.clicked.connect(self._calcular)
-        ctrl_lay.addWidget(self.btn_calc, 0, 2, 2, 1)
-        lay.addWidget(ctrl)
-
-        # Resultado
-        self.frame_resultado = QFrame()
-        self.frame_resultado.setStyleSheet(card_style(C_ACCENT2))
-        res_lay = QVBoxLayout(self.frame_resultado)
-        res_lay.setContentsMargins(24, 20, 24, 20)
-        self.lbl_titulo_res = QLabel("Probabilidad conjunta")
-        self.lbl_titulo_res.setStyleSheet(f"color:{C_MUTED}; font-size:12px; background:transparent;border:none;")
-        self.lbl_titulo_res.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_prob_conj = QLabel("—")
-        self.lbl_prob_conj.setStyleSheet(f"color:{C_ACCENT2}; font-size:40px; font-weight:800; background:transparent;border:none;")
-        self.lbl_prob_conj.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.lbl_num_consultado = QLabel("")
-        self.lbl_num_consultado.setStyleSheet(f"color:{C_MUTED}; font-size:12px; background:transparent;border:none;")
-        self.lbl_num_consultado.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        res_lay.addWidget(self.lbl_titulo_res)
-        res_lay.addWidget(self.lbl_prob_conj)
-        res_lay.addWidget(self.lbl_num_consultado)
-        lay.addWidget(self.frame_resultado)
-
-        # Detalle por posición
-        self.frame_detalle = QFrame()
-        self.frame_detalle.setStyleSheet(card_style())
-        det_lay = QGridLayout(self.frame_detalle)
-        det_lay.setContentsMargins(20, 16, 20, 16)
-        det_lay.setSpacing(12)
-
-        posiciones = ["centenas", "decenas", "unidades"]
-        nombres_ui = ["Centenas", "Decenas", "Unidades"]
-        colors     = [C_ACCENT, C_ACCENT2, C_SUCCESS]
-        self.lbl_dig2  = {}
-        self.lbl_pd2   = {}
-
-        for col, (pos, nombre, col_color) in enumerate(zip(posiciones, nombres_ui, colors)):
-            card = QFrame()
-            card.setStyleSheet(f"background:{C_BG}; border:1px solid {col_color}; border-radius:8px;")
-            c_lay = QVBoxLayout(card); c_lay.setContentsMargins(16,12,16,12)
-            lp = QLabel(nombre)
-            lp.setStyleSheet(f"color:{col_color}; font-weight:700; font-size:12px; background:transparent;border:none;")
-            lp.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            ld = QLabel("—")
-            ld.setStyleSheet(f"color:{C_TEXT}; font-size:28px; font-weight:800; background:transparent;border:none;")
-            ld.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            lprob = QLabel("")
-            lprob.setStyleSheet(f"color:{C_MUTED}; font-size:11px; background:transparent;border:none;")
-            lprob.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            c_lay.addWidget(lp); c_lay.addWidget(ld); c_lay.addWidget(lprob)
-            det_lay.addWidget(card, 0, col)
-            self.lbl_dig2[pos] = ld
-            self.lbl_pd2[pos]  = lprob
-
-        lay.addWidget(self.frame_detalle)
-        lay.addStretch()
-
-    def _calcular(self):
-        texto = self.input_num.text().strip()
-        if len(texto) != 3:
-            QMessageBox.warning(self, "Entrada inválida", "Ingresa exactamente 3 dígitos (ej: 521)")
-            return
-        c, d, u = int(texto[0]), int(texto[1]), int(texto[2])
-        numero = (c, d, u)
-        k = self.spin_k.value()
-        self.btn_calc.setEnabled(False)
-        self.btn_calc.setText("Calculando…")
-        self._worker = WorkerPrediccion(self.sistema, "caso2", k, numero)
-        self._worker.resultado.connect(self._mostrar)
-        self._worker.error.connect(self._error)
-        self._worker.start()
-
-    def _mostrar(self, res):
-        self.btn_calc.setEnabled(True)
-        self.btn_calc.setText("Consultar Probabilidad")
-        prob   = res["probabilidad_conjunta"]
-        detalle = res["detalle"]
-        numero  = res["numero"]
-
-        self.lbl_prob_conj.setText(f"{float(prob):.8f}")
-        self.lbl_num_consultado.setText(f"Para el número {''.join(map(str, numero))} — k={self.spin_k.value()} días")
-
-        for pos in ["centenas", "decenas", "unidades"]:
-            d = detalle[pos]
-            self.lbl_dig2[pos].setText(str(d["digito"]))
-            self.lbl_pd2[pos].setText(f"p = {float(d['probabilidad']):.6f}")
-
-    def _error(self, msg):
-        self.btn_calc.setEnabled(True)
-        self.btn_calc.setText("Consultar Probabilidad")
-        QMessageBox.critical(self, "Error", msg)
-
-
-# ── Página 3: Matrices de Transición ────────────────────────────────────────
-class PaginaMatrices(QWidget):
-    def __init__(self, sistema, parent=None):
-        super().__init__(parent)
-        self.sistema = sistema
-        self._build()
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(32, 32, 32, 32)
-        lay.setSpacing(16)
-
-        nav = QWidget(); nav.setStyleSheet("background:transparent;border:none;")
-        nav_lay = QHBoxLayout(nav); nav_lay.setContentsMargins(0,0,0,0)
-        back = QPushButton("← Volver"); back.setStyleSheet(btn_ghost())
-        back.clicked.connect(lambda: self.window().stack.setCurrentIndex(0))
-        nav_lay.addWidget(back); nav_lay.addStretch()
-        lay.addWidget(nav)
-
-        lay.addWidget(label_title("Matrices de Transición", 22, C_SUCCESS))
-        lay.addWidget(label_sub("Probabilidades de transición entre dígitos (10×10). Filas = estado actual, Columnas = siguiente estado"))
-
-        # Tabs custom
-        self.tab_btns = []
-        self.tabs_content = []
-        tabs_nav = QWidget(); tabs_nav.setStyleSheet("background:transparent;border:none;")
-        tabs_lay = QHBoxLayout(tabs_nav); tabs_lay.setContentsMargins(0,0,0,0); tabs_lay.setSpacing(8)
-
-        posiciones = ["centenas", "decenas", "unidades"]
-        nombres    = ["Centenas", "Decenas", "Unidades"]
-        colors_tab = [C_ACCENT, C_ACCENT2, C_SUCCESS]
-
-        self.stack_matrices = QStackedWidget()
-
-        for i, (pos, nombre, color) in enumerate(zip(posiciones, nombres, colors_tab)):
-            btn = QPushButton(nombre)
-            btn.setCheckable(True)
-            btn.setChecked(i == 0)
-            btn.setStyleSheet(f"""
-                QPushButton {{
-                    background-color: {'rgba(79,142,247,0.15)' if i==0 else 'transparent'};
-                    color: {color if i==0 else C_MUTED};
-                    border: 1px solid {color if i==0 else C_BORDER};
-                    border-radius: 6px;
-                    padding: 6px 16px;
-                    font-weight: {'700' if i==0 else '400'};
-                }}
-            """)
-            btn.clicked.connect(lambda _, idx=i: self._cambiar_tab(idx))
-            self.tab_btns.append(btn)
-            tabs_lay.addWidget(btn)
-
-            # Tabla
-            tabla = QTableWidget(10, 10)
-            tabla.setHorizontalHeaderLabels([str(j) for j in range(10)])
-            tabla.setVerticalHeaderLabels([str(j) for j in range(10)])
-            tabla.setStyleSheet(f"""
-                QTableWidget {{
-                    background-color: {C_BG};
-                    color: {C_TEXT};
-                    gridline-color: {C_BORDER};
-                    border: 1px solid {C_BORDER};
-                    border-radius: 8px;
-                    font-size: 11px;
-                }}
-                QHeaderView::section {{
-                    background-color: {C_SURFACE};
-                    color: {color};
-                    border: 1px solid {C_BORDER};
-                    padding: 4px;
-                    font-weight: 600;
-                }}
-                QTableWidget::item {{ padding: 4px; text-align: center; }}
-            """)
-            tabla.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-            tabla.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-            tabla.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-            tabla.setSelectionMode(QTableWidget.SelectionMode.NoSelection)
-
-            # Llenar con datos
-            matriz = self.sistema._matrices_transicion.get(pos)
-            if matriz:
-                for row in range(10):
-                    for col in range(10):
-                        val = float(matriz[row][col])
-                        item = QTableWidgetItem(f"{val:.4f}")
-                        item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                        # Color según magnitud
-                        if val >= 0.20:
-                            item.setForeground(QColor(color))
-                            f = item.font(); f.setBold(True); item.setFont(f)
-                        elif val >= 0.10:
-                            item.setForeground(QColor(C_TEXT))
-                        else:
-                            item.setForeground(QColor(C_MUTED))
-                        tabla.setItem(row, col, item)
-
-            self.stack_matrices.addWidget(tabla)
-            self.tabs_content.append(tabla)
-
-        tabs_lay.addStretch()
-        lay.addWidget(tabs_nav)
-        lay.addWidget(self.stack_matrices)
-
-        self._tab_colors = list(zip(colors_tab, nombres))
-
-    def _cambiar_tab(self, idx):
-        self.stack_matrices.setCurrentIndex(idx)
-        colors_tab = [C_ACCENT, C_ACCENT2, C_SUCCESS]
-        for i, btn in enumerate(self.tab_btns):
-            c = colors_tab[i]
-            activo = (i == idx)
-            btn.setStyleSheet(f"""
-                QPushButton {{
-                    background-color: {'rgba(79,142,247,0.15)' if activo and i==0 else ('rgba(167,139,250,0.15)' if activo and i==1 else ('rgba(52,211,153,0.15)' if activo else 'transparent'))};
-                    color: {c if activo else C_MUTED};
-                    border: 1px solid {c if activo else C_BORDER};
-                    border-radius: 6px;
-                    padding: 6px 16px;
-                    font-weight: {'700' if activo else '400'};
-                }}
-            """)
-
-
-# ── Página 4: Registrar nuevo sorteo ────────────────────────────────────────
-class PaginaRegistro(QWidget):
-    dato_registrado = pyqtSignal()
-
-    def __init__(self, datos, sistema, parent=None):
-        super().__init__(parent)
-        self.datos   = datos
-        self.sistema = sistema
-        self._build()
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(32, 32, 32, 32)
-        lay.setSpacing(18)
-
-        nav = QWidget(); nav.setStyleSheet("background:transparent;border:none;")
-        nav_lay = QHBoxLayout(nav); nav_lay.setContentsMargins(0,0,0,0)
-        back = QPushButton("← Volver"); back.setStyleSheet(btn_ghost())
-        back.clicked.connect(lambda: self.window().stack.setCurrentIndex(0))
-        nav_lay.addWidget(back); nav_lay.addStretch()
-        lay.addWidget(nav)
-
-        lay.addWidget(label_title("Registrar Nuevo Sorteo", 22, C_WARN))
-        lay.addWidget(label_sub("Agrega un resultado real al historial. El modelo se reconstruirá automáticamente."))
-
-        # Formulario
-        form = QFrame(); form.setStyleSheet(card_style())
-        form_lay = QGridLayout(form); form_lay.setContentsMargins(24, 20, 24, 20); form_lay.setSpacing(14)
-
-        etiquetas = ["Centena (0–9):", "Decena (0–9):", "Unidad (0–9):"]
-        self.inputs = []
-        for i, etiqueta in enumerate(etiquetas):
-            form_lay.addWidget(QLabel(etiqueta), i, 0)
-            sp = QSpinBox()
-            sp.setRange(0, 9)
-            sp.setFixedWidth(80)
-            sp.setStyleSheet(input_style())
-            form_lay.addWidget(sp, i, 1)
-            self.inputs.append(sp)
-
-        lay.addWidget(form)
-
-        # Botón
-        self.btn_reg = QPushButton("✓  Registrar Sorteo")
-        self.btn_reg.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {C_WARN};
-                color: #1A1200;
-                border: none;
-                border-radius: 8px;
-                padding: 12px 24px;
-                font-weight: 700;
-                font-size: 14px;
-            }}
-            QPushButton:hover {{ background-color: #FCD34D; }}
-            QPushButton:pressed {{ background-color: #D97706; }}
-        """)
-        self.btn_reg.clicked.connect(self._registrar)
-        lay.addWidget(self.btn_reg)
-
-        # Log
-        self.log = QTextEdit()
-        self.log.setReadOnly(True)
-        self.log.setStyleSheet(f"""
-            QTextEdit {{
-                background-color: {C_BG};
-                color: {C_TEXT};
-                border: 1px solid {C_BORDER};
-                border-radius: 8px;
-                font-family: 'Consolas', 'Courier New', monospace;
-                font-size: 12px;
-                padding: 10px;
-            }}
-        """)
-        self.log.setMaximumHeight(160)
-        lay.addWidget(self.log)
-        lay.addStretch()
-
-    def _registrar(self):
-        c, d, u = self.inputs[0].value(), self.inputs[1].value(), self.inputs[2].value()
-        try:
-            self.datos.set_nuevo_registro(c, d, u)
-            self.sistema.construir_modelo_completo()
-            ci = self.datos.get_condicion_inicial()
-            self.log.append(f"✓ Registrado: {c}{d}{u}  |  Nuevo estado inicial: {''.join(map(str, ci))}  |  Modelo actualizado.")
-            self.dato_registrado.emit()
-        except Exception as e:
-            self.log.append(f"✗ Error: {e}")
-
-
-# ── Ventana Principal ────────────────────────────────────────────────────────
-class VentanaPrincipal(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Predictor de Lotería — Cadenas de Markov")
-        self.setMinimumSize(680, 620)
-        self.resize(720, 700)
-        self.setStyleSheet(STYLE_GLOBAL)
-
-        # Cargar datos
-        script_dir   = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(script_dir, "..", "Data", "historial_loteria.xlsx")
-
-        self.datos = DatosLoteria(ruta_archivo)
-        if not self.datos.cargar_historial():
-            QMessageBox.critical(self, "Error", "No se pudo cargar el historial de lotería.")
-            sys.exit(1)
-
-        self.auditor = AuditorEstadistico(self.datos)
-        self.sistema = SistemaMarkovLoteria(self.datos)
-        self.sistema.construir_modelo_completo()
-
-        # Stack de páginas
-        self.stack = QStackedWidget()
-        self.setCentralWidget(self.stack)
-
-        self.pg_menu     = PaginaMenu(self.datos, self.auditor, self.sistema)
-        self.pg_caso1    = PaginaCaso1(self.sistema)
-        self.pg_caso2    = PaginaCaso2(self.sistema)
-        self.pg_matrices = PaginaMatrices(self.sistema)
-        self.pg_registro = PaginaRegistro(self.datos, self.sistema)
-
-        self.stack.addWidget(self.pg_menu)      # 0
-        self.stack.addWidget(self.pg_caso1)     # 1
-        self.stack.addWidget(self.pg_caso2)     # 2
-        self.stack.addWidget(self.pg_matrices)  # 3
-        self.stack.addWidget(self.pg_registro)  # 4
-
-        # Al registrar un sorteo, actualizar menú
-        self.pg_registro.dato_registrado.connect(self._actualizar_menu)
-
-    def _actualizar_menu(self):
-        # Recrear menú con datos actualizados
-        idx = self.stack.indexOf(self.pg_menu)
-        self.stack.removeWidget(self.pg_menu)
-        self.pg_menu.deleteLater()
-        self.pg_menu = PaginaMenu(self.datos, self.auditor, self.sistema)
-        self.stack.insertWidget(0, self.pg_menu)
-        self.stack.setCurrentIndex(0)
-
-
-def main():
-    app = QApplication(sys.argv)
-    app.setApplicationName("Predictor Lotería Markov")
-
-    # Forzar paleta oscura base
-    palette = QPalette()
-    palette.setColor(QPalette.ColorRole.Window,          QColor(C_BG))
-    palette.setColor(QPalette.ColorRole.WindowText,      QColor(C_TEXT))
-    palette.setColor(QPalette.ColorRole.Base,            QColor(C_SURFACE))
-    palette.setColor(QPalette.ColorRole.AlternateBase,   QColor(C_BG))
-    palette.setColor(QPalette.ColorRole.ToolTipBase,     QColor(C_SURFACE))
-    palette.setColor(QPalette.ColorRole.ToolTipText,     QColor(C_TEXT))
-    palette.setColor(QPalette.ColorRole.Text,            QColor(C_TEXT))
-    palette.setColor(QPalette.ColorRole.Button,          QColor(C_SURFACE))
-    palette.setColor(QPalette.ColorRole.ButtonText,      QColor(C_TEXT))
-    palette.setColor(QPalette.ColorRole.Highlight,       QColor(C_ACCENT))
-    palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
-    app.setPalette(palette)
-
-    ventana = VentanaPrincipal()
-    ventana.show()
-    sys.exit(app.exec())
-
-
-if __name__ == "__main__":
-    main()
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>511</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackPrincipal">
+      <widget class="QWidget" name="page">
+       <widget class="QPushButton" name="btnIrProbabilidad">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>110</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calcular Probabilidad de un Número</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnIrMasProbable">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>150</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ver Número Más Probable</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnIrMatrices">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>190</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ver Matrices de Transición</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_3">
+       <widget class="QPushButton" name="btnVolver2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>40</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox_2">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>130</y>
+          <width>78</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>180</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Calcular</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="lcdNumber">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>230</y>
+          <width>64</width>
+          <height>23</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <widget class="QPushButton" name="btnVolver3">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>30</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>140</y>
+          <width>301</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Centenas</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Decenas</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_1">
+         <attribute name="title">
+          <string>Unidades</string>
+         </attribute>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <widget class="QPushButton" name="btnVolver1">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>40</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;- Volver</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>110</y>
+          <width>113</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinBox">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>170</y>
+          <width>78</width>
+          <height>26</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
