@@ -10,9 +10,18 @@ class DatosLoteria:
 
     def cargar_historial(self) -> bool:
         if self._ruta_archivo.endswith(".xlsx") or self._ruta_archivo.endswith(".xls"):
-            self._datos_df = pd.read_excel(self._ruta_archivo, header=None, names=["centenas", "decenas", "unidades"])
+            self._datos_df = pd.read_excel(self._ruta_archivo, header=None,
+                                           names=["centenas", "decenas", "unidades"])
         else:
-            self._datos_df = pd.read_csv(self._ruta_archivo, header=None, names=["centenas", "decenas", "unidades"])
+            self._datos_df = pd.read_csv(self._ruta_archivo, header=None,
+                                         names=["centenas", "decenas", "unidades"])
+
+        # Eliminar filas con NaN o no numéricas (por si el archivo se corrompió)
+        self._datos_df = self._datos_df.dropna()
+        self._datos_df = self._datos_df[
+            self._datos_df["centenas"].apply(lambda x: str(x).strip().isdigit())
+        ]
+        self._datos_df = self._datos_df.reset_index(drop=True)
 
         self._arreglos_digitos["centenas"] = self._datos_df["centenas"].astype(int).tolist()
         self._arreglos_digitos["decenas"]  = self._datos_df["decenas"].astype(int).tolist()
@@ -33,7 +42,8 @@ class DatosLoteria:
         return self._ultimo_numero
 
     def set_nuevo_registro(self, centena: int, decena: int, unidad: int) -> bool:
-        nueva_fila = pd.DataFrame([[centena, decena, unidad]])
+        nueva_fila = pd.DataFrame([[centena, decena, unidad]],
+                                  columns=["centenas", "decenas", "unidades"])
         self._datos_df = pd.concat([self._datos_df, nueva_fila], ignore_index=True)
 
         self._arreglos_digitos["centenas"].append(centena)
@@ -42,6 +52,7 @@ class DatosLoteria:
 
         self._ultimo_numero = (centena, decena, unidad)
 
+        # Guardar SIN encabezado para que al recargar con header=None no haya conflicto
         if self._ruta_archivo.endswith(".xlsx") or self._ruta_archivo.endswith(".xls"):
             self._datos_df.to_excel(self._ruta_archivo, index=False, header=False)
         else:
