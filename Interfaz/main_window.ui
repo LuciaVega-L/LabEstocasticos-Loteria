@@ -6,189 +6,1308 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
-    <height>530</height>
+    <width>720</width>
+    <height>700</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>680</width>
+    <height>620</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Predictor de Lotería — Cadenas de Markov</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow, QWidget {
+    background-color: #0D0F1A;
+    color: #E2E8F0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+}
+QScrollBar:vertical {
+    background: #151827;
+    width: 8px;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical {
+    background: #1E2235;
+    border-radius: 4px;
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_central">
     <item>
      <widget class="QStackedWidget" name="stackPrincipal">
-      <widget class="QWidget" name="page">
-       <widget class="QPushButton" name="btnIrProbabilidad">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>110</y>
-          <width>231</width>
-          <height>31</height>
-         </rect>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="pageMenu">
+       <layout class="QVBoxLayout" name="vl_menu">
+        <property name="spacing">
+         <number>16</number>
         </property>
-        <property name="text">
-         <string>Calcular Probabilidad de un Número</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnIrMasProbable">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>150</y>
-          <width>231</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Ver Número Más Probable</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btnIrMatrices">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>190</y>
-          <width>231</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Ver Matrices de Transición</string>
-        </property>
-       </widget>
+        <item>
+         <widget class="QLabel" name="lblBadge">
+          <property name="styleSheet">
+           <string notr="true">color: #4F8EF7; font-size: 11px; font-weight: 700; letter-spacing: 2px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>                                                     SISTEMA ESTOCÁSTICO</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTituloMenu">
+          <property name="styleSheet">
+           <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 700; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Predictor de Lotería</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubMenu">
+          <property name="styleSheet">
+           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Modelo de Cadenas de Markov · Tres dígitos independientes</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameCondicionInicial">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #4F8EF7; border-radius: 10px; padding: 4px; }</string>
+          </property>
+          <layout class="QHBoxLayout" name="hl_ci">
+           <item>
+            <widget class="QLabel" name="lblCITitulo">
+             <property name="styleSheet">
+              <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+             </property>
+             <property name="text">
+              <string>Último número registrado</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacer_ci">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblCondicionInicial">
+             <property name="styleSheet">
+              <string notr="true">color: #4F8EF7; font-size: 28px; font-weight: 800; letter-spacing: 8px; background: transparent; border: none;</string>
+             </property>
+             <property name="text">
+              <string>---</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnIrCaso1">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</string>
+          </property>
+          <property name="text">
+           <string>Número Más Probable  —  Caso 1: predicción del dígito con mayor probabilidad</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnIrCaso2">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</string>
+          </property>
+          <property name="text">
+           <string>Probabilidad de un Número  —  Caso 2: consulta la probabilidad conjunta de un número específico</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnIrMatrices">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</string>
+          </property>
+          <property name="text">
+           <string>Matrices de Transición  —  Visualiza las matrices 10×10 por posición</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnIrRegistro">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</string>
+          </property>
+          <property name="text">
+           <string>Registrar Nuevo Sorteo  —  Agrega un resultado real y actualiza el modelo</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="spacer_menu_bottom">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="page_3">
-       <widget class="QPushButton" name="btnVolver2">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>40</y>
-          <width>81</width>
-          <height>26</height>
-         </rect>
+      <widget class="QWidget" name="pageCaso1">
+       <layout class="QVBoxLayout" name="vl_caso1">
+        <property name="spacing">
+         <number>16</number>
         </property>
-        <property name="text">
-         <string>&lt;- Volver</string>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox_2">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>130</y>
-          <width>78</width>
-          <height>26</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>180</y>
-          <width>81</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Calcular</string>
-        </property>
-       </widget>
-       <widget class="QLCDNumber" name="lcdNumber">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>230</y>
-          <width>64</width>
-          <height>23</height>
-         </rect>
-        </property>
-       </widget>
+        <item>
+         <layout class="QHBoxLayout" name="hl_nav1">
+          <item>
+           <widget class="QPushButton" name="btnVolverCaso1">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>← Volver</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTituloCaso1">
+          <property name="styleSheet">
+           <string notr="true">color: #4F8EF7; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Número Más Probable</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubCaso1">
+          <property name="styleSheet">
+           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Caso 1: Selecciona el horizonte temporal y calcula la predicción</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameControlCaso1">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QHBoxLayout" name="hl_ctrl1">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblKCaso1">
+             <property name="text">
+              <string>Días a predecir (k):</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinKCaso1">
+             <property name="styleSheet">
+              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #4F8EF7; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>365</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>90</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCalcularCaso1">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: #4F8EF7; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #6B9FFA; } QPushButton:pressed { background-color: #3B75E0; } QPushButton:disabled { background-color: #1E2235; color: #64748B; }</string>
+             </property>
+             <property name="text">
+              <string>Calcular Predicción</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameResultadoCaso1">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #4F8EF7; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QVBoxLayout" name="vl_res1">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblNumTitulo">
+             <property name="styleSheet">
+              <string notr="true">color: #64748B; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string>Número más probable</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblNumeroCaso1">
+             <property name="styleSheet">
+              <string notr="true">color: #4F8EF7; font-size: 52px; font-weight: 800; letter-spacing: 12px;</string>
+             </property>
+             <property name="text">
+              <string>---</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblProbConjCaso1">
+             <property name="styleSheet">
+              <string notr="true">color: #64748B; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameDetalleCaso1">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QGridLayout" name="grid_det1">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QFrame" name="frameCentenasCaso1">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #4F8EF7; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_cent1">
+              <item>
+               <widget class="QLabel" name="lblCentLabel1">
+                <property name="styleSheet">
+                 <string notr="true">color: #4F8EF7; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Centenas</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoCentenas1">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbCentenas1">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QFrame" name="frameDecenasCaso1">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #A78BFA; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_dec1">
+              <item>
+               <widget class="QLabel" name="lblDecLabel1">
+                <property name="styleSheet">
+                 <string notr="true">color: #A78BFA; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Decenas</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoDecenas1">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbDecenas1">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QFrame" name="frameUnidadesCaso1">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #34D399; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_uni1">
+              <item>
+               <widget class="QLabel" name="lblUniLabel1">
+                <property name="styleSheet">
+                 <string notr="true">color: #34D399; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Unidades</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoUnidades1">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbUnidades1">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="page_4">
-       <widget class="QPushButton" name="btnVolver3">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>30</y>
-          <width>81</width>
-          <height>26</height>
-         </rect>
+      <widget class="QWidget" name="pageCaso2">
+       <layout class="QVBoxLayout" name="vl_caso2">
+        <property name="spacing">
+         <number>16</number>
         </property>
-        <property name="text">
-         <string>&lt;- Volver</string>
-        </property>
-       </widget>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>140</y>
-          <width>301</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>Centenas</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_2">
-         <attribute name="title">
-          <string>Decenas</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="tab_1">
-         <attribute name="title">
-          <string>Unidades</string>
-         </attribute>
-        </widget>
-       </widget>
+        <item>
+         <layout class="QHBoxLayout" name="hl_nav2">
+          <item>
+           <widget class="QPushButton" name="btnVolverCaso2">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>← Volver</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTituloCaso2">
+          <property name="styleSheet">
+           <string notr="true">color: #A78BFA; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Probabilidad de un Número</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubCaso2">
+          <property name="styleSheet">
+           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Caso 2: Ingresa un número de 3 dígitos y el horizonte temporal</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameInputCaso2">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QGridLayout" name="grid_inp2">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lblNumLabel">
+             <property name="text">
+              <string>Número (3 dígitos):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEditNumero">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QLineEdit:focus { border: 1px solid #A78BFA; }</string>
+             </property>
+             <property name="maxLength">
+              <number>3</number>
+             </property>
+             <property name="placeholderText">
+              <string>000 – 999</string>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>120</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lblKCaso2">
+             <property name="text">
+              <string>Días a predecir (k):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinKCaso2">
+             <property name="styleSheet">
+              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #A78BFA; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>365</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>90</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" rowspan="2">
+            <widget class="QPushButton" name="btnCalcularCaso2">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background-color: #A78BFA; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #B49BFF; } QPushButton:pressed { background-color: #8B6FD8; } QPushButton:disabled { background-color: #1E2235; color: #64748B; }</string>
+             </property>
+             <property name="text">
+              <string>Consultar Probabilidad</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameResultadoCaso2">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #A78BFA; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QVBoxLayout" name="vl_res2">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblProbTitulo2">
+             <property name="styleSheet">
+              <string notr="true">color: #64748B; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string>Probabilidad conjunta</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblProbConjCaso2">
+             <property name="styleSheet">
+              <string notr="true">color: #A78BFA; font-size: 40px; font-weight: 800;</string>
+             </property>
+             <property name="text">
+              <string>—</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblInfoCaso2">
+             <property name="styleSheet">
+              <string notr="true">color: #64748B; font-size: 12px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameDetalleCaso2">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QGridLayout" name="grid_det2">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QFrame" name="frameCentenasCaso2">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #4F8EF7; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_cent2">
+              <item>
+               <widget class="QLabel" name="lblCentLabel2">
+                <property name="styleSheet">
+                 <string notr="true">color: #4F8EF7; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Centenas</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoCentenas2">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbCentenas2">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QFrame" name="frameDecenasCaso2">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #A78BFA; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_dec2">
+              <item>
+               <widget class="QLabel" name="lblDecLabel2">
+                <property name="styleSheet">
+                 <string notr="true">color: #A78BFA; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Decenas</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoDecenas2">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbDecenas2">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QFrame" name="frameUnidadesCaso2">
+             <property name="styleSheet">
+              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #34D399; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+             </property>
+             <layout class="QVBoxLayout" name="vl_uni2">
+              <item>
+               <widget class="QLabel" name="lblUniLabel2">
+                <property name="styleSheet">
+                 <string notr="true">color: #34D399; font-weight: 700; font-size: 12px;</string>
+                </property>
+                <property name="text">
+                 <string>Unidades</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblDigitoUnidades2">
+                <property name="styleSheet">
+                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>—</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="lblProbUnidades2">
+                <property name="styleSheet">
+                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
-       <widget class="QPushButton" name="btnVolver1">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>40</y>
-          <width>81</width>
-          <height>26</height>
-         </rect>
+      <widget class="QWidget" name="pageMatrices">
+       <layout class="QVBoxLayout" name="vl_matrices">
+        <property name="spacing">
+         <number>14</number>
         </property>
-        <property name="text">
-         <string>&lt;- Volver</string>
+        <item>
+         <layout class="QHBoxLayout" name="hl_nav3">
+          <item>
+           <widget class="QPushButton" name="btnVolverMatrices">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>← Volver</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTituloMatrices">
+          <property name="styleSheet">
+           <string notr="true">color: #34D399; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Matrices de Transición</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubMatrices">
+          <property name="styleSheet">
+           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Probabilidades 10×10. Filas = estado actual (dígito de hoy), Columnas = siguiente estado (dígito siguiente)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hl_tabs">
+          <item>
+           <widget class="QPushButton" name="btnTabCentenas">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background-color: rgba(79,142,247,0.15); color: #4F8EF7; border: 1px solid #4F8EF7; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>Centenas</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnTabDecenas">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background-color: rgba(167,139,250,0.15); color: #A78BFA; border: 1px solid #A78BFA; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>Decenas</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnTabUnidades">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background-color: rgba(52,211,153,0.15); color: #34D399; border: 1px solid #34D399; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>Unidades</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="stackMatrices">
+          <widget class="QWidget" name="pageMatCentenas">
+           <layout class="QVBoxLayout" name="vl_mc">
+            <item>
+             <widget class="QTableWidget" name="tablaCentenas">
+              <property name="styleSheet">
+               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #4F8EF7; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
+              <property name="rowCount">
+               <number>10</number>
+              </property>
+              <property name="columnCount">
+               <number>10</number>
+              </property>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="pageMatDecenas">
+           <layout class="QVBoxLayout" name="vl_md">
+            <item>
+             <widget class="QTableWidget" name="tablaDecenas">
+              <property name="styleSheet">
+               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #A78BFA; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
+              <property name="rowCount">
+               <number>10</number>
+              </property>
+              <property name="columnCount">
+               <number>10</number>
+              </property>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="pageMatUnidades">
+           <layout class="QVBoxLayout" name="vl_mu">
+            <item>
+             <widget class="QTableWidget" name="tablaUnidades">
+              <property name="styleSheet">
+               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #34D399; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
+              <property name="rowCount">
+               <number>10</number>
+              </property>
+              <property name="columnCount">
+               <number>10</number>
+              </property>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+              <column/>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageRegistro">
+       <layout class="QVBoxLayout" name="vl_registro">
+        <property name="spacing">
+         <number>16</number>
         </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>110</y>
-          <width>113</width>
-          <height>26</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBox">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>170</y>
-          <width>78</width>
-          <height>26</height>
-         </rect>
-        </property>
-       </widget>
+        <item>
+         <layout class="QHBoxLayout" name="hl_nav4">
+          <item>
+           <widget class="QPushButton" name="btnVolverRegistro">
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+            </property>
+            <property name="text">
+             <string>← Volver</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblTituloRegistro">
+          <property name="styleSheet">
+           <string notr="true">color: #FBBF24; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Registrar Nuevo Sorteo</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubRegistro">
+          <property name="styleSheet">
+           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+          </property>
+          <property name="text">
+           <string>Agrega un resultado real al historial. El modelo se reconstruirá automáticamente.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameFormRegistro">
+          <property name="styleSheet">
+           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+          </property>
+          <layout class="QGridLayout" name="grid_reg">
+           <property name="spacing">
+            <number>14</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="lblCentenaReg">
+             <property name="text">
+              <string>Centena (0 – 9):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinCentena">
+             <property name="styleSheet">
+              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>80</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="lblDecenaReg">
+             <property name="text">
+              <string>Decena (0 – 9):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinDecena">
+             <property name="styleSheet">
+              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>80</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="lblUnidadReg">
+             <property name="text">
+              <string>Unidad (0 – 9):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinUnidad">
+             <property name="styleSheet">
+              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+             </property>
+             <property name="minimum">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <number>9</number>
+             </property>
+             <property name="fixedWidth" stdset="0">
+              <number>80</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnRegistrar">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton { background-color: #FBBF24; color: #1A1200; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; font-size: 14px; } QPushButton:hover { background-color: #FCD34D; } QPushButton:pressed { background-color: #D97706; }</string>
+          </property>
+          <property name="text">
+           <string> Registrar Sorteo</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="textEditLog">
+          <property name="styleSheet">
+           <string notr="true">QTextEdit { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; padding: 10px; }</string>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="placeholderText">
+           <string>El registro de operaciones aparecerá aquí…</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">QStatusBar { background-color: #0D0F1A; color: #64748B; border-top: 1px solid #1E2235; font-size: 11px; }</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
