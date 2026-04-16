@@ -1,6 +1,7 @@
 from decimal import Decimal, getcontext
-getcontext().prec = 50
+from matrices import Matrices
 
+getcontext().prec = 50
 class SistemaMarkovLoteria:
 
     def __init__(self, datos):
@@ -11,35 +12,6 @@ class SistemaMarkovLoteria:
     # ─────────────────────────────────────────────
     # MÉTODOS PRIVADOS
     # ─────────────────────────────────────────────
-
-    def _multiplicar_matrices(self, A, B):
-        n = len(A)
-        m = len(B[0])
-        p = len(B)
-        resultado = [[Decimal(0)] * m for _ in range(n)]
-        for i in range(n):
-            for j in range(m):
-                for k in range(p):
-                    resultado[i][j] += A[i][k] * B[k][j]
-        return resultado
-
-    def _multiplicar_vector_matriz(self, v, M):
-        n = len(M)
-        m = len(M[0])
-        resultado = [Decimal(0)] * m
-        for j in range(m):
-            for i in range(n):
-                resultado[j] += v[i] * M[i][j]
-        return resultado
-
-    def _potencia_matriz(self, M, k):
-        if k == 1:
-            return [fila[:] for fila in M]
-        if k % 2 == 0:
-            mitad = self._potencia_matriz(M, k // 2)
-            return self._multiplicar_matrices(mitad, mitad)
-        else:
-            return self._multiplicar_matrices(M, self._potencia_matriz(M, k - 1))
 
     def _construir_matriz_suavizada(self, arreglo):
         conteos = [[0] * 10 for _ in range(10)]
@@ -83,8 +55,8 @@ class SistemaMarkovLoteria:
         for posicion in ["centenas", "decenas", "unidades"]:
             M  = self._matrices_transicion[posicion]
             v  = self._vectores_estado[posicion]
-            Mk = self._potencia_matriz(M, k_dias)
-            vk = self._multiplicar_vector_matriz(v, Mk)
+            Mk = Matrices.potencia_matriz(M, k_dias)
+            vk = Matrices.multiplicar_vector_matriz(v, Mk)
 
             resultado[posicion] = {
                 "vector": vk
