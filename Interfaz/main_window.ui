@@ -43,7 +43,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
     <item>
      <widget class="QStackedWidget" name="stackPrincipal">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageMenu">
        <layout class="QVBoxLayout" name="vl_menu">
@@ -99,7 +99,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
            <item>
             <spacer name="spacer_ci">
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -132,7 +132,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
 QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Número Más Probable  —  Caso 1: predicción del dígito con mayor probabilidad</string>
+           <string>Número Más Probable  —  Predicción del dígito con mayor probabilidad</string>
           </property>
          </widget>
         </item>
@@ -146,7 +146,7 @@ QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</str
 QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Probabilidad de un Número  —  Caso 2: consulta la probabilidad conjunta de un número específico</string>
+           <string>Probabilidad de un Número  —  Consulta la probabilidad conjunta de un número específico</string>
           </property>
          </widget>
         </item>
@@ -181,7 +181,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <spacer name="spacer_menu_bottom">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -213,7 +213,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <spacer>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -283,7 +283,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <spacer>
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Orientation::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -327,7 +327,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string>Número más probable</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -340,7 +340,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string>---</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -353,7 +353,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string/>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -384,7 +384,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Centenas</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -397,7 +397,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -410,7 +410,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -432,7 +432,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Decenas</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -445,7 +445,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -458,7 +458,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -480,7 +480,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Unidades</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -493,7 +493,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -506,7 +506,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -519,7 +519,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <spacer>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -551,7 +551,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <spacer>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -579,7 +579,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
-           <string>Caso 2: Ingresa un número de 3 dígitos y el horizonte temporal</string>
+           <string>Ingresa un número de 3 dígitos y el horizonte temporal</string>
           </property>
          </widget>
         </item>
@@ -675,7 +675,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string>Probabilidad conjunta</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -688,7 +688,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string>—</string>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -701,7 +701,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <string/>
              </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -732,7 +732,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Centenas</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -745,7 +745,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -758,7 +758,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -780,7 +780,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Decenas</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -793,7 +793,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -806,7 +806,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -828,7 +828,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>Unidades</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -841,7 +841,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string>—</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -854,7 +854,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                  <string/>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -867,7 +867,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <spacer>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -899,7 +899,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <spacer>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -927,7 +927,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
-           <string>Probabilidades 10×10. Filas = estado actual (dígito de hoy), Columnas = siguiente estado (dígito siguiente)</string>
+           <string>Probabilidades 10×10. </string>
           </property>
          </widget>
         </item>
@@ -978,7 +978,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <spacer>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1000,10 +1000,10 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #4F8EF7; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
+               <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
               </property>
               <property name="selectionMode">
-               <enum>QAbstractItemView::NoSelection</enum>
+               <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
               </property>
               <property name="rowCount">
                <number>10</number>
@@ -1043,10 +1043,10 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #A78BFA; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
+               <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
               </property>
               <property name="selectionMode">
-               <enum>QAbstractItemView::NoSelection</enum>
+               <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
               </property>
               <property name="rowCount">
                <number>10</number>
@@ -1086,10 +1086,10 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
                <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #34D399; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
+               <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
               </property>
               <property name="selectionMode">
-               <enum>QAbstractItemView::NoSelection</enum>
+               <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
               </property>
               <property name="rowCount">
                <number>10</number>
@@ -1145,7 +1145,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <spacer>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1287,7 +1287,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <spacer>
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
