@@ -13,22 +13,22 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QColor, QPalette, QIntValidator
 from PyQt6 import uic
 
-# ── módulos de lógica ────────────────────────────────────────────────────────
+#  módulos de lógica 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from datos import DatosLoteria
 from analisis_loteria import AuditorEstadistico
 from sistema import SistemaMarkovLoteria
 
 
-# ── Worker thread para cálculos pesados ─────────────────────────────────────
-class WorkerPrediccion(QThread):
+#  Worker thread para cálculos pesados 
+class ControladorPrediccion(QThread):
     resultado = pyqtSignal(dict)
     error     = pyqtSignal(str)
 
     def __init__(self, sistema, modo, k, numero=None):
         super().__init__()
         self.sistema = sistema
-        self.modo    = modo   # "caso1" | "caso2"
+        self.modo    = modo   
         self.k       = k
         self.numero  = numero
 
@@ -43,7 +43,7 @@ class WorkerPrediccion(QThread):
             self.error.emit(str(e))
 
 
-# ── Ventana principal ────────────────────────────────────────────────────────
+# Ventana principal 
 class MainWindow(QMainWindow):
 
     # Índices de página en stackPrincipal
@@ -90,7 +90,7 @@ class MainWindow(QMainWindow):
         # Mostrar menú al arrancar
         self.stackPrincipal.setCurrentIndex(self.PAGE_MENU)
 
-    # ── Navegación ────────────────────────────────────────────────────────────
+    # Navegación 
 
     def _setup_navegacion(self):
         # Menú → páginas
@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
         self.btnVolverRegistro.clicked.connect(lambda: self.stackPrincipal.setCurrentIndex(self.PAGE_MENU))
         self._inyectar_boton_auditoria()
 
-    # ── Menú principal ────────────────────────────────────────────────────────
+    #  Menú principal 
 
     def _setup_menu(self):
         self._actualizar_condicion_inicial()
@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
         ci = self.datos.get_condicion_inicial()
         self.lblCondicionInicial.setText("".join(map(str, ci)))
 
-    # ── CASO 1: Número más probable ───────────────────────────────────────────
+    # CASO 1: Número más probable 
 
     def _setup_caso1(self):
         self.btnCalcularCaso1.clicked.connect(self._calcular_caso1)
@@ -124,7 +124,7 @@ class MainWindow(QMainWindow):
         self.btnCalcularCaso1.setEnabled(False)
         self.btnCalcularCaso1.setText("Calculando…")
         k = self.spinKCaso1.value()
-        self._worker = WorkerPrediccion(self.sistema, "caso1", k)
+        self._worker = ControladorPrediccion(self.sistema, "caso1", k)
         self._worker.resultado.connect(self._mostrar_caso1)
         self._worker.error.connect(self._error_calculo)
         self._worker.start()
@@ -158,7 +158,7 @@ class MainWindow(QMainWindow):
         empate = f"  (empate: {d['empates']})" if d["empates"] else ""
         self.lblProbUnidades1.setText(f"p = {float(d['probabilidad']):.6f}{empate}")
 
-    # ── CASO 2: Probabilidad de un número específico ──────────────────────────
+    # Probabilidad de un número específico 
 
     def _setup_caso2(self):
         self.lineEditNumero.setValidator(QIntValidator(0, 999, self))
@@ -178,7 +178,7 @@ class MainWindow(QMainWindow):
         self.btnCalcularCaso2.setEnabled(False)
         self.btnCalcularCaso2.setText("Calculando…")
 
-        self._worker = WorkerPrediccion(self.sistema, "caso2", k, numero)
+        self._worker = ControladorPrediccion(self.sistema, "caso2", k, numero)
         self._worker.resultado.connect(self._mostrar_caso2)
         self._worker.error.connect(self._error_calculo)
         self._worker.start()
@@ -205,7 +205,7 @@ class MainWindow(QMainWindow):
             lbl_dig.setText(str(d["digito"]))
             lbl_prob.setText(f"p = {float(d['probabilidad']):.6f}")
 
-    # ── Matrices de Transición ────────────────────────────────────────────────
+    #  Matrices de Transición 
 
     def _ir_matrices(self):
         self._llenar_matrices()
@@ -378,7 +378,7 @@ class MainWindow(QMainWindow):
         vl_aleat.addWidget(self._lblAleatVeredicto)
         vl.addWidget(frame_aleat)
 
-        # ── Conclusión final ──
+        # Conclusión final 
         frame_concl = self._crear_frame_seccion("#1E2235")
         vl_concl = QVBoxLayout(frame_concl)
         self._lblConclusionAuditoria = QLabel()
@@ -415,7 +415,7 @@ class MainWindow(QMainWindow):
 
         alfa = 0.05
 
-        # ── Independencia ──
+        # Independencia 
         pares = [
             ("Centenas vs Decenas",  indep["p_value_cd"], self._lblIndepCD),
             ("Decenas vs Unidades",  indep["p_value_du"], self._lblIndepDU),
@@ -442,7 +442,7 @@ class MainWindow(QMainWindow):
             "font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
 
-        # ── Aleatoriedad ──
+        # Aleatoriedad 
         labels_aleat = {
             "centenas": self._lblAleatCentenas,
             "decenas":  self._lblAleatDecenas,
@@ -473,7 +473,7 @@ class MainWindow(QMainWindow):
             "font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
 
-        # ── Conclusión ──
+        #  Conclusión 
         modelo_justificado = veredicto_indep and todo_aleatorio
         if modelo_justificado:
             self._lblConclusionAuditoria.setText(
@@ -490,7 +490,7 @@ class MainWindow(QMainWindow):
                 "color: #FBBF24; font-size: 14px; font-weight: 700; background: transparent; border: none;"
             )
 
-    # ── Error genérico de cálculo ─────────────────────────────────────────────
+    #  Error genérico de cálculo 
 
     def _error_calculo(self, msg):
         for btn_text, btn in [
@@ -502,7 +502,7 @@ class MainWindow(QMainWindow):
         QMessageBox.critical(self, "Error en el cálculo", msg)
 
 
-# ── Punto de entrada ─────────────────────────────────────────────────────────
+# Punto de entrada 
 def main():
     app = QApplication(sys.argv)
     app.setApplicationName("Predictor Lotería Markov")

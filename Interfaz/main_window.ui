@@ -43,7 +43,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
     <item>
      <widget class="QStackedWidget" name="stackPrincipal">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pageMenu">
        <layout class="QVBoxLayout" name="vl_menu">
@@ -132,7 +132,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
 QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Número Más Probable  —  Predicción del dígito con mayor probabilidad</string>
+           <string>Número Más Probable  </string>
           </property>
          </widget>
         </item>
@@ -146,7 +146,7 @@ QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</str
 QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Probabilidad de un Número  —  Consulta la probabilidad conjunta de un número específico</string>
+           <string>Probabilidad de un Número  </string>
           </property>
          </widget>
         </item>
@@ -160,7 +160,7 @@ QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</str
 QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Matrices de Transición  —  Visualiza las matrices 10×10 por posición</string>
+           <string>Matrices de Transición  </string>
           </property>
          </widget>
         </item>
@@ -174,7 +174,7 @@ QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</str
 QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Registrar Nuevo Sorteo  —  Agrega un resultado real y actualiza el modelo</string>
+           <string>Registrar Nuevo Sorteo  </string>
           </property>
          </widget>
         </item>

@@ -12,8 +12,8 @@ class SistemaMarkovLoteria:
     def _construir_matriz_estocasica(self, arreglo):
         conteos = [[0] * 10 for _ in range(10)]
         for t in range(len(arreglo) - 1):
-            i = arreglo[t] #0  #0
-            j = arreglo[t + 1] #2 #3
+            i = arreglo[t] 
+            j = arreglo[t + 1]
             conteos[i][j] += 1
 
         matriz = [[Decimal(0)] * 10 for _ in range(10)]
