@@ -9,7 +9,7 @@ class SistemaMarkovLoteria:
         self._matrices_transicion = {}
         self._vectores_estado     = {}
 
-    def _construir_matriz_suavizada(self, arreglo):
+    def _construir_matriz_estocasica(self, arreglo):
         conteos = [[0] * 10 for _ in range(10)]
         for t in range(len(arreglo) - 1):
             i = arreglo[t] #0  #0
@@ -33,7 +33,7 @@ class SistemaMarkovLoteria:
     def construir_modelo_completo(self):
         for posicion in ["centenas", "decenas", "unidades"]:
             arreglo = self._fuente_datos.get_arreglo(posicion)
-            self._matrices_transicion[posicion] = self._construir_matriz_suavizada(arreglo)
+            self._matrices_transicion[posicion] = self._construir_matriz_estocasica(arreglo)
 
         condicion_inicial = self._fuente_datos.get_condicion_inicial()
         self._vectores_estado["centenas"]  = self._construir_vector_inicial(condicion_inicial[0])
