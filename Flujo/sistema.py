@@ -12,18 +12,16 @@ class SistemaMarkovLoteria:
     def _construir_matriz_suavizada(self, arreglo):
         conteos = [[0] * 10 for _ in range(10)]
         for t in range(len(arreglo) - 1):
-            i = arreglo[t]
-            j = arreglo[t + 1]
+            i = arreglo[t] #0  #0
+            j = arreglo[t + 1] #2 #3
             conteos[i][j] += 1
 
         matriz = [[Decimal(0)] * 10 for _ in range(10)]
         for i in range(10):
             total_fila = sum(conteos[i])
             for j in range(10):
-                if total_fila == 0:
-                    matriz[i][j] = Decimal(1) / Decimal(10)
-                else:
-                    matriz[i][j] = Decimal(conteos[i][j]) / Decimal(total_fila)
+                #Algoritmo de búsqueda y conteo
+                matriz[i][j] = Decimal(conteos[i][j]) / Decimal(total_fila)  #formula que explico el profe en el tablero, P00 = n00/cantidad de veces que cayó en o
         return matriz
 
     def _construir_vector_inicial(self, digito):
@@ -46,13 +44,13 @@ class SistemaMarkovLoteria:
         resultado = {}
 
         for posicion in ["centenas", "decenas", "unidades"]:
-            M  = self._matrices_transicion[posicion]
-            v  = self._vectores_estado[posicion]
-            Mk = Matrices.potencia_matriz(M, k_dias)
-            vk = Matrices.multiplicar_vector_matriz(v, Mk)
+            M_transpuesta  = Matrices.transponer_matriz(self._matrices_transicion[posicion])
+            P_0  = self._vectores_estado[posicion]  #P(0)
+            M_transpuesta_k = Matrices.potencia_matriz(M_transpuesta, k_dias) 
+            P_k = Matrices.multiplicar_matriz_vector(M_transpuesta_k, P_0) 
 
             resultado[posicion] = {
-                "vector": vk
+                "vector": P_k #P(k)
             }
 
         return resultado

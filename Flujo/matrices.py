@@ -14,13 +14,12 @@ class Matrices:
         return resultado
 
     @staticmethod
-    def multiplicar_vector_matriz(v, M):
-        n = len(M)
-        m = len(M[0])
-        resultado = [Decimal(0)] * m
-        for j in range(m):
-            for i in range(n):
-                resultado[j] += v[i] * M[i][j]
+    def multiplicar_matriz_vector(M, v):
+        n = len(M) 
+        resultado = [Decimal(0)] * n
+        for i in range(n):
+            for j in range(len(v)):
+                resultado[i] += M[i][j] * v[j]
         return resultado
 
     @staticmethod
@@ -32,3 +31,9 @@ class Matrices:
             return Matrices.multiplicar_matrices(mitad, mitad)
         else:
             return Matrices.multiplicar_matrices(M, Matrices.potencia_matriz(M, k - 1))
+
+    @staticmethod
+    def transponer_matriz(M):
+        filas = len(M)
+        columnas = len(M[0])
+        return [[M[i][j] for i in range(filas)] for j in range(columnas)]
