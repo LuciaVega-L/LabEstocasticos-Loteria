@@ -226,9 +226,9 @@ class MainWindow(QMainWindow):
 
     def _llenar_matrices(self):
         config = [
-            ("centenas", self.tablaCentenas,  "#4F8EF7"),
-            ("decenas",  self.tablaDecenas,   "#A78BFA"),
-            ("unidades", self.tablaUnidades,  "#34D399"),
+            ("centenas", self.tablaCentenas,  "#1A1A1A"),
+            ("decenas",  self.tablaDecenas,   "#555555"),
+            ("unidades", self.tablaUnidades,  "#888888"),
         ]
         for pos, tabla, color_alto in config:
             matriz = self.sistema._matrices_transicion.get(pos)
@@ -239,13 +239,13 @@ class MainWindow(QMainWindow):
                     val  = float(matriz[row][col])
                     item = QTableWidgetItem(f"{val:.4f}")
                     item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                    item.setForeground(QColor("#E2E8F0"))
+                    item.setForeground(QColor("#1A1A1A"))
                     tabla.setItem(row, col, item)
 
     def _cambiar_tab_matriz(self, idx):
         self.stackMatrices.setCurrentIndex(idx)
         btns   = [self.btnTabCentenas, self.btnTabDecenas, self.btnTabUnidades]
-        colors = ["#4F8EF7", "#A78BFA", "#34D399"]
+        colors = ["#1A1A1A", "#555555", "#888888"]
         for i, (btn, color) in enumerate(zip(btns, colors)):
             btn.setChecked(i == idx)
 
@@ -280,10 +280,10 @@ class MainWindow(QMainWindow):
         )
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setStyleSheet(
-            "QPushButton { background-color: #151827; color: #E2E8F0; "
-            "border: 1px solid #1E2235; border-radius: 10px; "
+            "QPushButton { background-color: #F5F5F5; color: #1A1A1A; "
+            "border: 1px solid #E0E0E0; border-radius: 10px; "
             "padding: 18px 20px; font-size: 13px; text-align: left; }\n"
-            "QPushButton:hover { border: 1px solid #22D3EE; background-color: #181B2E; }"
+            "QPushButton:hover { border: 1px solid #1A1A1A; background-color: #F0F0F0; }"
         )
         btn.clicked.connect(lambda: self._ir_auditoria())
         # Insertar antes del spacer final (último item)
@@ -292,7 +292,7 @@ class MainWindow(QMainWindow):
     def _setup_auditoria(self):
         """Construye programáticamente la página de auditoría y la añade al stack."""
         page = QWidget()
-        page.setStyleSheet("background-color: #0D0F1A; color: #E2E8F0;")
+        page.setStyleSheet("background-color: #FFFFFF; color: #1A1A1A;")
         outer = QVBoxLayout(page)
         outer.setContentsMargins(0, 0, 0, 0)
 
@@ -300,6 +300,9 @@ class MainWindow(QMainWindow):
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet(
             "QScrollArea { border: none; background: transparent; }\n"
+            "QScrollBar:vertical { background: #F5F5F5; width: 8px; border-radius: 4px; }\n"
+            "QScrollBar::handle:vertical { background: #E0E0E0; border-radius: 4px; min-height: 20px; }\n"
+            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }\n"
             "QWidget#_audContent { background: transparent; }"
         )
         content = QWidget()
@@ -311,8 +314,8 @@ class MainWindow(QMainWindow):
         hl_nav = QHBoxLayout()
         btn_volver = QPushButton("← Volver")
         btn_volver.setStyleSheet(
-            "QPushButton { background: transparent; color: #64748B; border: none; "
-            "padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }"
+            "QPushButton { background: transparent; color: #757575; border: none; "
+            "padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #1A1A1A; }"
         )
         btn_volver.clicked.connect(lambda: self.stackPrincipal.setCurrentIndex(self.PAGE_MENU))
         hl_nav.addWidget(btn_volver)
@@ -321,20 +324,20 @@ class MainWindow(QMainWindow):
 
         # ── Título ──
         lbl_titulo = QLabel("Verificación de Aleatoriedad e Independencia")
-        lbl_titulo.setStyleSheet("color: #22D3EE; font-size: 22px; font-weight: 700; background: transparent;")
+        lbl_titulo.setStyleSheet("color: #1A1A1A; font-size: 22px; font-weight: 700; background: transparent;")
         vl.addWidget(lbl_titulo)
 
         lbl_sub = QLabel("Pruebas Chi² de independencia y correlación de Spearman  ·  α = 0.05")
-        lbl_sub.setStyleSheet("color: #64748B; font-size: 12px; background: transparent;")
+        lbl_sub.setStyleSheet("color: #757575; font-size: 12px; background: transparent;")
         vl.addWidget(lbl_sub)
 
         # ── Sección Independencia ──
-        frame_indep = self._crear_frame_seccion("#22D3EE")
+        frame_indep = self._crear_frame_seccion("#E0E0E0")
         vl_indep = QVBoxLayout(frame_indep)
         vl_indep.setSpacing(8)
 
         lbl_indep_titulo = QLabel("Independencia entre posiciones (Chi<sup>2</sup>)")
-        lbl_indep_titulo.setStyleSheet("color: #22D3EE; font-size: 15px; font-weight: 700; background: transparent; border: none;")
+        lbl_indep_titulo.setStyleSheet("color: #1A1A1A; font-size: 15px; font-weight: 700; background: transparent; border: none;")
         vl_indep.addWidget(lbl_indep_titulo)
 
         self._lblIndepCD = QLabel()
@@ -342,21 +345,21 @@ class MainWindow(QMainWindow):
         self._lblIndepCU = QLabel()
         self._lblIndepVeredicto = QLabel()
         for lbl in (self._lblIndepCD, self._lblIndepDU, self._lblIndepCU):
-            lbl.setStyleSheet("color: #E2E8F0; font-size: 13px; background: transparent; border: none;")
+            lbl.setStyleSheet("color: #1A1A1A; font-size: 13px; background: transparent; border: none;")
             vl_indep.addWidget(lbl)
         self._lblIndepVeredicto.setStyleSheet(
-            "color: #64748B; font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
+            "color: #757575; font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
         vl_indep.addWidget(self._lblIndepVeredicto)
         vl.addWidget(frame_indep)
 
         # ── Sección Aleatoriedad ──
-        frame_aleat = self._crear_frame_seccion("#22D3EE")
+        frame_aleat = self._crear_frame_seccion("#E0E0E0")
         vl_aleat = QVBoxLayout(frame_aleat)
         vl_aleat.setSpacing(8)
 
         lbl_aleat_titulo = QLabel("Aleatoriedad por posición (Spearman)")
-        lbl_aleat_titulo.setStyleSheet("color: #22D3EE; font-size: 15px; font-weight: 700; background: transparent; border: none;")
+        lbl_aleat_titulo.setStyleSheet("color: #1A1A1A; font-size: 15px; font-weight: 700; background: transparent; border: none;")
         vl_aleat.addWidget(lbl_aleat_titulo)
 
         self._lblAleatCentenas = QLabel()
@@ -364,20 +367,20 @@ class MainWindow(QMainWindow):
         self._lblAleatUnidades = QLabel()
         self._lblAleatVeredicto = QLabel()
         for lbl in (self._lblAleatCentenas, self._lblAleatDecenas, self._lblAleatUnidades):
-            lbl.setStyleSheet("color: #E2E8F0; font-size: 13px; background: transparent; border: none;")
+            lbl.setStyleSheet("color: #1A1A1A; font-size: 13px; background: transparent; border: none;")
             vl_aleat.addWidget(lbl)
         self._lblAleatVeredicto.setStyleSheet(
-            "color: #64748B; font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
+            "color: #757575; font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
         vl_aleat.addWidget(self._lblAleatVeredicto)
         vl.addWidget(frame_aleat)
 
         # Conclusión final 
-        frame_concl = self._crear_frame_seccion("#1E2235")
+        frame_concl = self._crear_frame_seccion("#E0E0E0")
         vl_concl = QVBoxLayout(frame_concl)
         self._lblConclusionAuditoria = QLabel()
         self._lblConclusionAuditoria.setStyleSheet(
-            "color: #E2E8F0; font-size: 14px; font-weight: 700; background: transparent; border: none;"
+            "color: #1A1A1A; font-size: 14px; font-weight: 700; background: transparent; border: none;"
         )
         self._lblConclusionAuditoria.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._lblConclusionAuditoria.setWordWrap(True)
@@ -394,7 +397,7 @@ class MainWindow(QMainWindow):
     def _crear_frame_seccion(color_borde: str) -> QFrame:
         frame = QFrame()
         frame.setStyleSheet(
-            f"QFrame {{ background-color: #151827; border: 1px solid {color_borde}; border-radius: 10px; }}"
+            f"QFrame {{ background-color: #F5F5F5; border: 1px solid {color_borde}; border-radius: 10px; }}"
         )
         return frame
 
@@ -418,7 +421,7 @@ class MainWindow(QMainWindow):
         for nombre, pval, lbl in pares:
             ok = pval > alfa
             icono = "✓" if ok else "✗"
-            color = "#34D399" if ok else "#F87171"
+            color = "#2E7D32" if ok else "#CC0000"
             lbl.setText(
                 f"{nombre}  ·  p-value: {pval:.4f}  |  Condición: p > {alfa}  →  "
                 f'<span style="color:{color};">{icono} {"Independientes" if ok else "NO independientes"}</span>'
@@ -432,7 +435,7 @@ class MainWindow(QMainWindow):
             "✗  Al menos un par de posiciones NO es independiente."
         )
         self._lblIndepVeredicto.setStyleSheet(
-            f"color: {'#34D399' if veredicto_indep else '#F87171'}; "
+            f"color: {'#2E7D32' if veredicto_indep else '#CC0000'}; "
             "font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
 
@@ -449,7 +452,7 @@ class MainWindow(QMainWindow):
             if not ok:
                 todo_aleatorio = False
             icono = "✓" if ok else "✗"
-            color = "#34D399" if ok else "#F87171"
+            color = "#2E7D32" if ok else "#CC0000"
             lbl.setText(
                 f"{posicion.capitalize():10}  ·  correlación: {res['correlacion']:+.4f}  |  "
                 f"p-value: {res['p_value']:.4f}  |  Condición: p > {alfa}  →  "
@@ -463,7 +466,7 @@ class MainWindow(QMainWindow):
             "✗  Al menos una posición NO muestra comportamiento aleatorio."
         )
         self._lblAleatVeredicto.setStyleSheet(
-            f"color: {'#34D399' if todo_aleatorio else '#F87171'}; "
+            f"color: {'#2E7D32' if todo_aleatorio else '#CC0000'}; "
             "font-size: 13px; font-weight: 600; padding-top: 4px; background: transparent; border: none;"
         )
 
@@ -474,14 +477,14 @@ class MainWindow(QMainWindow):
                 "El modelo de Markov está justificado: los datos cumplen independencia y aleatoriedad."
             )
             self._lblConclusionAuditoria.setStyleSheet(
-                "color: #34D399; font-size: 14px; font-weight: 700; background: transparent; border: none;"
+                "color: #2E7D32; font-size: 14px; font-weight: 700; background: transparent; border: none;"
             )
         else:
             self._lblConclusionAuditoria.setText(
                 "Advertencia: los datos NO cumplen todos los supuestos del modelo de Markov."
             )
             self._lblConclusionAuditoria.setStyleSheet(
-                "color: #FBBF24; font-size: 14px; font-weight: 700; background: transparent; border: none;"
+                "color: #CC0000; font-size: 14px; font-weight: 700; background: transparent; border: none;"
             )
 
     #  Error genérico de cálculo 
@@ -502,13 +505,13 @@ def main():
     app.setApplicationName("Predictor Lotería Markov")
 
     palette = QPalette()
-    palette.setColor(QPalette.ColorRole.Window,        QColor("#0D0F1A"))
-    palette.setColor(QPalette.ColorRole.WindowText,    QColor("#E2E8F0"))
-    palette.setColor(QPalette.ColorRole.Base,          QColor("#151827"))
-    palette.setColor(QPalette.ColorRole.Text,          QColor("#E2E8F0"))
-    palette.setColor(QPalette.ColorRole.Button,        QColor("#151827"))
-    palette.setColor(QPalette.ColorRole.ButtonText,    QColor("#E2E8F0"))
-    palette.setColor(QPalette.ColorRole.Highlight,     QColor("#4F8EF7"))
+    palette.setColor(QPalette.ColorRole.Window,        QColor("#FFFFFF"))
+    palette.setColor(QPalette.ColorRole.WindowText,    QColor("#1A1A1A"))
+    palette.setColor(QPalette.ColorRole.Base,          QColor("#F5F5F5"))
+    palette.setColor(QPalette.ColorRole.Text,          QColor("#1A1A1A"))
+    palette.setColor(QPalette.ColorRole.Button,        QColor("#F5F5F5"))
+    palette.setColor(QPalette.ColorRole.ButtonText,    QColor("#1A1A1A"))
+    palette.setColor(QPalette.ColorRole.Highlight,     QColor("#1A1A1A"))
     palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
     app.setPalette(palette)
 

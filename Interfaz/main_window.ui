@@ -21,18 +21,18 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow, QWidget {
-    background-color: #0D0F1A;
-    color: #E2E8F0;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     font-size: 13px;
 }
 QScrollBar:vertical {
-    background: #151827;
+    background: #F5F5F5;
     width: 8px;
     border-radius: 4px;
 }
 QScrollBar::handle:vertical {
-    background: #1E2235;
+    background: #E0E0E0;
     border-radius: 4px;
     min-height: 20px;
 }
@@ -53,7 +53,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
         <item>
          <widget class="QLabel" name="lblBadge">
           <property name="styleSheet">
-           <string notr="true">color: #4F8EF7; font-size: 11px; font-weight: 700; letter-spacing: 2px; background: transparent; border: none;</string>
+           <string notr="true">color: #1A1A1A; font-size: 11px; font-weight: 700; letter-spacing: 2px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>                                                     SISTEMA ESTOCÁSTICO</string>
@@ -63,7 +63,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
         <item>
          <widget class="QLabel" name="lblTituloMenu">
           <property name="styleSheet">
-           <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 700; background: transparent; border: none;</string>
+           <string notr="true">color: #1A1A1A; font-size: 28px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Predictor de Lotería</string>
@@ -73,7 +73,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
         <item>
          <widget class="QLabel" name="lblSubMenu">
           <property name="styleSheet">
-           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+           <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Modelo de Cadenas de Markov · Tres dígitos independientes</string>
@@ -83,13 +83,13 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
         <item>
          <widget class="QFrame" name="frameCondicionInicial">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #4F8EF7; border-radius: 10px; padding: 4px; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #1A1A1A; border-radius: 10px; padding: 4px; }</string>
           </property>
           <layout class="QHBoxLayout" name="hl_ci">
            <item>
             <widget class="QLabel" name="lblCITitulo">
              <property name="styleSheet">
-              <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+              <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
              </property>
              <property name="text">
               <string>Último número registrado</string>
@@ -112,7 +112,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
            <item>
             <widget class="QLabel" name="lblCondicionInicial">
              <property name="styleSheet">
-              <string notr="true">color: #4F8EF7; font-size: 28px; font-weight: 800; letter-spacing: 8px; background: transparent; border: none;</string>
+              <string notr="true">color: #1A1A1A; font-size: 28px; font-weight: 800; letter-spacing: 8px; background: transparent; border: none;</string>
              </property>
              <property name="text">
               <string>---</string>
@@ -128,8 +128,8 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }</str
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
-QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</string>
+           <string notr="true">QPushButton { background-color: #F5F5F5; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #1A1A1A; background-color: #F0F0F0; }</string>
           </property>
           <property name="text">
            <string>Número Más Probable  </string>
@@ -142,8 +142,8 @@ QPushButton:hover { border: 1px solid #4F8EF7; background-color: #181B2E; }</str
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
-QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</string>
+           <string notr="true">QPushButton { background-color: #F5F5F5; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #555555; background-color: #F0F0F0; }</string>
           </property>
           <property name="text">
            <string>Probabilidad de un Número  </string>
@@ -156,8 +156,8 @@ QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</str
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
-QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</string>
+           <string notr="true">QPushButton { background-color: #F5F5F5; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #888888; background-color: #F0F0F0; }</string>
           </property>
           <property name="text">
            <string>Matrices Estocasticas  </string>
@@ -170,8 +170,8 @@ QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</str
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: #151827; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
-QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</string>
+           <string notr="true">QPushButton { background-color: #F5F5F5; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 10px; padding: 18px 20px; font-size: 13px; text-align: left; }
+QPushButton:hover { border: 1px solid #333333; background-color: #F0F0F0; }</string>
           </property>
           <property name="text">
            <string>Registrar Nuevo Sorteo  </string>
@@ -203,7 +203,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnVolverCaso1">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background: transparent; color: #757575; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>← Volver</string>
@@ -228,7 +228,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblTituloCaso1">
           <property name="styleSheet">
-           <string notr="true">color: #4F8EF7; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+           <string notr="true">color: #1A1A1A; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Número Más Probable</string>
@@ -238,7 +238,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblSubCaso1">
           <property name="styleSheet">
-           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+           <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Caso 1: Selecciona el horizonte temporal y calcula la predicción</string>
@@ -248,7 +248,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameControlCaso1">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QHBoxLayout" name="hl_ctrl1">
            <property name="spacing">
@@ -264,7 +264,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QSpinBox" name="spinKCaso1">
              <property name="styleSheet">
-              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #4F8EF7; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+              <string notr="true">QSpinBox { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #1A1A1A; } QSpinBox::up-button, QSpinBox::down-button { background-color: #E0E0E0; border-radius: 3px; width: 18px; }</string>
              </property>
              <property name="minimum">
               <number>1</number>
@@ -299,7 +299,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true">QPushButton { background-color: #4F8EF7; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #6B9FFA; } QPushButton:pressed { background-color: #3B75E0; } QPushButton:disabled { background-color: #1E2235; color: #64748B; }</string>
+              <string notr="true">QPushButton { background-color: #1A1A1A; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #333333; } QPushButton:pressed { background-color: #000000; } QPushButton:disabled { background-color: #E0E0E0; color: #757575; }</string>
              </property>
              <property name="text">
               <string>Calcular Predicción</string>
@@ -312,7 +312,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameResultadoCaso1">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #4F8EF7; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #1A1A1A; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QVBoxLayout" name="vl_res1">
            <property name="spacing">
@@ -321,7 +321,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblNumTitulo">
              <property name="styleSheet">
-              <string notr="true">color: #64748B; font-size: 12px;</string>
+              <string notr="true">color: #757575; font-size: 12px;</string>
              </property>
              <property name="text">
               <string>Número más probable</string>
@@ -334,7 +334,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblNumeroCaso1">
              <property name="styleSheet">
-              <string notr="true">color: #4F8EF7; font-size: 52px; font-weight: 800; letter-spacing: 12px;</string>
+              <string notr="true">color: #1A1A1A; font-size: 52px; font-weight: 800; letter-spacing: 12px;</string>
              </property>
              <property name="text">
               <string>---</string>
@@ -347,7 +347,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblProbConjCaso1">
              <property name="styleSheet">
-              <string notr="true">color: #64748B; font-size: 12px;</string>
+              <string notr="true">color: #757575; font-size: 12px;</string>
              </property>
              <property name="text">
               <string/>
@@ -363,7 +363,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameDetalleCaso1">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QGridLayout" name="grid_det1">
            <property name="spacing">
@@ -372,13 +372,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="0">
             <widget class="QFrame" name="frameCentenasCaso1">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #4F8EF7; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #1A1A1A; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_cent1">
               <item>
                <widget class="QLabel" name="lblCentLabel1">
                 <property name="styleSheet">
-                 <string notr="true">color: #4F8EF7; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #1A1A1A; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Centenas</string>
@@ -391,7 +391,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoCentenas1">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 32px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -404,7 +404,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbCentenas1">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -420,13 +420,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="1">
             <widget class="QFrame" name="frameDecenasCaso1">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #A78BFA; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #555555; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_dec1">
               <item>
                <widget class="QLabel" name="lblDecLabel1">
                 <property name="styleSheet">
-                 <string notr="true">color: #A78BFA; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #555555; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Decenas</string>
@@ -439,7 +439,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoDecenas1">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 32px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -452,7 +452,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbDecenas1">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -468,13 +468,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="2">
             <widget class="QFrame" name="frameUnidadesCaso1">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #34D399; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #888888; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_uni1">
               <item>
                <widget class="QLabel" name="lblUniLabel1">
                 <property name="styleSheet">
-                 <string notr="true">color: #34D399; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #888888; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Unidades</string>
@@ -487,7 +487,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoUnidades1">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 32px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 32px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -500,7 +500,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbUnidades1">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -541,7 +541,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnVolverCaso2">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background: transparent; color: #757575; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>← Volver</string>
@@ -566,7 +566,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblTituloCaso2">
           <property name="styleSheet">
-           <string notr="true">color: #A78BFA; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+           <string notr="true">color: #555555; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Probabilidad de un Número</string>
@@ -576,7 +576,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblSubCaso2">
           <property name="styleSheet">
-           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+           <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Ingresa un número de 3 dígitos y el horizonte temporal</string>
@@ -586,7 +586,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameInputCaso2">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QGridLayout" name="grid_inp2">
            <property name="spacing">
@@ -602,7 +602,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEditNumero">
              <property name="styleSheet">
-              <string notr="true">QLineEdit { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QLineEdit:focus { border: 1px solid #A78BFA; }</string>
+              <string notr="true">QLineEdit { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QLineEdit:focus { border: 1px solid #555555; }</string>
              </property>
              <property name="maxLength">
               <number>3</number>
@@ -625,7 +625,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="1" column="1">
             <widget class="QSpinBox" name="spinKCaso2">
              <property name="styleSheet">
-              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #A78BFA; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+              <string notr="true">QSpinBox { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #555555; } QSpinBox::up-button, QSpinBox::down-button { background-color: #E0E0E0; border-radius: 3px; width: 18px; }</string>
              </property>
              <property name="minimum">
               <number>1</number>
@@ -647,7 +647,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true">QPushButton { background-color: #A78BFA; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #B49BFF; } QPushButton:pressed { background-color: #8B6FD8; } QPushButton:disabled { background-color: #1E2235; color: #64748B; }</string>
+              <string notr="true">QPushButton { background-color: #555555; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 13px; } QPushButton:hover { background-color: #777777; } QPushButton:pressed { background-color: #444444; } QPushButton:disabled { background-color: #E0E0E0; color: #757575; }</string>
              </property>
              <property name="text">
               <string>Consultar Probabilidad</string>
@@ -660,7 +660,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameResultadoCaso2">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #A78BFA; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #555555; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QVBoxLayout" name="vl_res2">
            <property name="spacing">
@@ -669,7 +669,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblProbTitulo2">
              <property name="styleSheet">
-              <string notr="true">color: #64748B; font-size: 12px;</string>
+              <string notr="true">color: #757575; font-size: 12px;</string>
              </property>
              <property name="text">
               <string>Probabilidad conjunta</string>
@@ -682,7 +682,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblProbConjCaso2">
              <property name="styleSheet">
-              <string notr="true">color: #A78BFA; font-size: 40px; font-weight: 800;</string>
+              <string notr="true">color: #555555; font-size: 40px; font-weight: 800;</string>
              </property>
              <property name="text">
               <string>—</string>
@@ -695,7 +695,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item>
             <widget class="QLabel" name="lblInfoCaso2">
              <property name="styleSheet">
-              <string notr="true">color: #64748B; font-size: 12px;</string>
+              <string notr="true">color: #757575; font-size: 12px;</string>
              </property>
              <property name="text">
               <string/>
@@ -711,7 +711,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameDetalleCaso2">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QGridLayout" name="grid_det2">
            <property name="spacing">
@@ -720,13 +720,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="0">
             <widget class="QFrame" name="frameCentenasCaso2">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #4F8EF7; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #1A1A1A; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_cent2">
               <item>
                <widget class="QLabel" name="lblCentLabel2">
                 <property name="styleSheet">
-                 <string notr="true">color: #4F8EF7; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #1A1A1A; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Centenas</string>
@@ -739,7 +739,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoCentenas2">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 28px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -752,7 +752,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbCentenas2">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -768,13 +768,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="1">
             <widget class="QFrame" name="frameDecenasCaso2">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #A78BFA; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #555555; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_dec2">
               <item>
                <widget class="QLabel" name="lblDecLabel2">
                 <property name="styleSheet">
-                 <string notr="true">color: #A78BFA; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #555555; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Decenas</string>
@@ -787,7 +787,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoDecenas2">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 28px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -800,7 +800,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbDecenas2">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -816,13 +816,13 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="2">
             <widget class="QFrame" name="frameUnidadesCaso2">
              <property name="styleSheet">
-              <string notr="true">QFrame { background-color: #0D0F1A; border: 1px solid #34D399; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
+              <string notr="true">QFrame { background-color: #FFFFFF; border: 1px solid #888888; border-radius: 8px; } QLabel { background: transparent; border: none; }</string>
              </property>
              <layout class="QVBoxLayout" name="vl_uni2">
               <item>
                <widget class="QLabel" name="lblUniLabel2">
                 <property name="styleSheet">
-                 <string notr="true">color: #34D399; font-weight: 700; font-size: 12px;</string>
+                 <string notr="true">color: #888888; font-weight: 700; font-size: 12px;</string>
                 </property>
                 <property name="text">
                  <string>Unidades</string>
@@ -835,7 +835,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblDigitoUnidades2">
                 <property name="styleSheet">
-                 <string notr="true">color: #E2E8F0; font-size: 28px; font-weight: 800;</string>
+                 <string notr="true">color: #1A1A1A; font-size: 28px; font-weight: 800;</string>
                 </property>
                 <property name="text">
                  <string>—</string>
@@ -848,7 +848,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
               <item>
                <widget class="QLabel" name="lblProbUnidades2">
                 <property name="styleSheet">
-                 <string notr="true">color: #64748B; font-size: 11px;</string>
+                 <string notr="true">color: #757575; font-size: 11px;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -889,7 +889,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnVolverMatrices">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background: transparent; color: #757575; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>← Volver</string>
@@ -914,7 +914,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblTituloMatrices">
           <property name="styleSheet">
-           <string notr="true">color: #34D399; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+           <string notr="true">color: #888888; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Matrices Estocasticas</string>
@@ -924,7 +924,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblSubMatrices">
           <property name="styleSheet">
-           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+           <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Probabilidades 10×10. </string>
@@ -936,7 +936,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnTabCentenas">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background-color: rgba(79,142,247,0.15); color: #4F8EF7; border: 1px solid #4F8EF7; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background-color: rgba(26,26,26,0.08); color: #1A1A1A; border: 1px solid #1A1A1A; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #757575; border: 1px solid #E0E0E0; font-weight: 400; } QPushButton:!checked:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>Centenas</string>
@@ -952,7 +952,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnTabDecenas">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background-color: rgba(167,139,250,0.15); color: #A78BFA; border: 1px solid #A78BFA; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background-color: rgba(85,85,85,0.08); color: #555555; border: 1px solid #555555; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #757575; border: 1px solid #E0E0E0; font-weight: 400; } QPushButton:!checked:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>Decenas</string>
@@ -965,7 +965,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnTabUnidades">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background-color: rgba(52,211,153,0.15); color: #34D399; border: 1px solid #34D399; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #64748B; border: 1px solid #1E2235; font-weight: 400; } QPushButton:!checked:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background-color: rgba(136,136,136,0.08); color: #888888; border: 1px solid #888888; border-radius: 6px; padding: 6px 16px; font-weight: 700; } QPushButton:!checked { background-color: transparent; color: #757575; border: 1px solid #E0E0E0; font-weight: 400; } QPushButton:!checked:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>Unidades</string>
@@ -997,7 +997,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
             <item>
              <widget class="QTableWidget" name="tablaCentenas">
               <property name="styleSheet">
-               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #4F8EF7; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+               <string notr="true">QTableWidget { background-color: #FFFFFF; color: #1A1A1A; gridline-color: #E0E0E0; border: 1px solid #E0E0E0; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #F5F5F5; color: #1A1A1A; border: 1px solid #E0E0E0; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
@@ -1040,7 +1040,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
             <item>
              <widget class="QTableWidget" name="tablaDecenas">
               <property name="styleSheet">
-               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #A78BFA; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+               <string notr="true">QTableWidget { background-color: #FFFFFF; color: #1A1A1A; gridline-color: #E0E0E0; border: 1px solid #E0E0E0; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #F5F5F5; color: #555555; border: 1px solid #E0E0E0; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
@@ -1083,7 +1083,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
             <item>
              <widget class="QTableWidget" name="tablaUnidades">
               <property name="styleSheet">
-               <string notr="true">QTableWidget { background-color: #0D0F1A; color: #E2E8F0; gridline-color: #1E2235; border: 1px solid #1E2235; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #151827; color: #34D399; border: 1px solid #1E2235; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
+               <string notr="true">QTableWidget { background-color: #FFFFFF; color: #1A1A1A; gridline-color: #E0E0E0; border: 1px solid #E0E0E0; border-radius: 8px; font-size: 11px; } QHeaderView::section { background-color: #F5F5F5; color: #888888; border: 1px solid #E0E0E0; padding: 4px; font-weight: 600; } QTableWidget::item { padding: 4px; }</string>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
@@ -1135,7 +1135,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
           <item>
            <widget class="QPushButton" name="btnVolverRegistro">
             <property name="styleSheet">
-             <string notr="true">QPushButton { background: transparent; color: #64748B; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #E2E8F0; }</string>
+             <string notr="true">QPushButton { background: transparent; color: #757575; border: none; padding: 6px 12px; font-size: 12px; } QPushButton:hover { color: #1A1A1A; }</string>
             </property>
             <property name="text">
              <string>← Volver</string>
@@ -1160,7 +1160,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblTituloRegistro">
           <property name="styleSheet">
-           <string notr="true">color: #FBBF24; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
+           <string notr="true">color: #333333; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Registrar Nuevo Sorteo</string>
@@ -1170,7 +1170,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QLabel" name="lblSubRegistro">
           <property name="styleSheet">
-           <string notr="true">color: #64748B; font-size: 12px; background: transparent; border: none;</string>
+           <string notr="true">color: #757575; font-size: 12px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Agrega un resultado real al historial. El modelo se reconstruirá automáticamente.</string>
@@ -1180,7 +1180,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QFrame" name="frameFormRegistro">
           <property name="styleSheet">
-           <string notr="true">QFrame { background-color: #151827; border: 1px solid #1E2235; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
+           <string notr="true">QFrame { background-color: #F5F5F5; border: 1px solid #E0E0E0; border-radius: 10px; } QLabel { background: transparent; border: none; }</string>
           </property>
           <layout class="QGridLayout" name="grid_reg">
            <property name="spacing">
@@ -1196,7 +1196,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="0" column="1">
             <widget class="QSpinBox" name="spinCentena">
              <property name="styleSheet">
-              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+              <string notr="true">QSpinBox { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #333333; } QSpinBox::up-button, QSpinBox::down-button { background-color: #E0E0E0; border-radius: 3px; width: 18px; }</string>
              </property>
              <property name="minimum">
               <number>0</number>
@@ -1219,7 +1219,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="1" column="1">
             <widget class="QSpinBox" name="spinDecena">
              <property name="styleSheet">
-              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+              <string notr="true">QSpinBox { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #333333; } QSpinBox::up-button, QSpinBox::down-button { background-color: #E0E0E0; border-radius: 3px; width: 18px; }</string>
              </property>
              <property name="minimum">
               <number>0</number>
@@ -1242,7 +1242,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <item row="2" column="1">
             <widget class="QSpinBox" name="spinUnidad">
              <property name="styleSheet">
-              <string notr="true">QSpinBox { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #FBBF24; } QSpinBox::up-button, QSpinBox::down-button { background-color: #1E2235; border-radius: 3px; width: 18px; }</string>
+              <string notr="true">QSpinBox { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 6px; padding: 8px 12px; font-size: 14px; } QSpinBox:focus { border: 1px solid #333333; } QSpinBox::up-button, QSpinBox::down-button { background-color: #E0E0E0; border-radius: 3px; width: 18px; }</string>
              </property>
              <property name="minimum">
               <number>0</number>
@@ -1264,7 +1264,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: #FBBF24; color: #1A1200; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; font-size: 14px; } QPushButton:hover { background-color: #FCD34D; } QPushButton:pressed { background-color: #D97706; }</string>
+           <string notr="true">QPushButton { background-color: #333333; color: #FFFFFF; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; font-size: 14px; } QPushButton:hover { background-color: #555555; } QPushButton:pressed { background-color: #111111; }</string>
           </property>
           <property name="text">
            <string> Registrar Sorteo</string>
@@ -1274,7 +1274,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
         <item>
          <widget class="QTextEdit" name="textEditLog">
           <property name="styleSheet">
-           <string notr="true">QTextEdit { background-color: #0D0F1A; color: #E2E8F0; border: 1px solid #1E2235; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; padding: 10px; }</string>
+           <string notr="true">QTextEdit { background-color: #FFFFFF; color: #1A1A1A; border: 1px solid #E0E0E0; border-radius: 8px; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; padding: 10px; }</string>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -1305,7 +1305,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="styleSheet">
-    <string notr="true">QStatusBar { background-color: #0D0F1A; color: #64748B; border-top: 1px solid #1E2235; font-size: 11px; }</string>
+    <string notr="true">QStatusBar { background-color: #FFFFFF; color: #757575; border-top: 1px solid #E0E0E0; font-size: 11px; }</string>
    </property>
   </widget>
  </widget>
