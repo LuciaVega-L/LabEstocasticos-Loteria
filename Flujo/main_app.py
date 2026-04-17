@@ -239,13 +239,7 @@ class MainWindow(QMainWindow):
                     val  = float(matriz[row][col])
                     item = QTableWidgetItem(f"{val:.4f}")
                     item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                    if val >= 0.20:
-                        item.setForeground(QColor(color_alto))
-                        f = item.font(); f.setBold(True); item.setFont(f)
-                    elif val >= 0.10:
-                        item.setForeground(QColor("#E2E8F0"))
-                    else:
-                        item.setForeground(QColor("#64748B"))
+                    item.setForeground(QColor("#E2E8F0"))
                     tabla.setItem(row, col, item)
 
     def _cambiar_tab_matriz(self, idx):
@@ -282,7 +276,7 @@ class MainWindow(QMainWindow):
         """Agrega dinámicamente el botón de auditoría al menú principal."""
         layout_menu = self.stackPrincipal.widget(self.PAGE_MENU).layout()
         btn = QPushButton(
-            "Verificación de Aleatoriedad e Independencia  —  Auditoría estadística del modelo"
+            "Verificación de Aleatoriedad e Independencia  "
         )
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
         btn.setStyleSheet(

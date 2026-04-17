@@ -160,7 +160,7 @@ QPushButton:hover { border: 1px solid #A78BFA; background-color: #181B2E; }</str
 QPushButton:hover { border: 1px solid #34D399; background-color: #181B2E; }</string>
           </property>
           <property name="text">
-           <string>Matrices de Transición  </string>
+           <string>Matrices Estocasticas  </string>
           </property>
          </widget>
         </item>
@@ -917,7 +917,7 @@ QPushButton:hover { border: 1px solid #FBBF24; background-color: #181B2E; }</str
            <string notr="true">color: #34D399; font-size: 22px; font-weight: 700; background: transparent; border: none;</string>
           </property>
           <property name="text">
-           <string>Matrices de Transición</string>
+           <string>Matrices Estocasticas</string>
           </property>
          </widget>
         </item>
